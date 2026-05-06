@@ -33,7 +33,7 @@ https://www.youtube.com/watch?v=YThBLyCoXZk
 
 I invite you to look at the GoodStat demo version, here is the access data:
 
-- url: https://goodstat.com.pl/demo
+- url: https://goodstat.pl/demo
 - login: goodstat
 - password: demo
 
@@ -57,4 +57,4 @@ I invite you to look at the GoodStat demo version, here is the access data:
 - Paste the code into every subpage in your domain that you want to be monitored by the GoodStat System.
 - The data from the monitored domain will be read immediately after pasting the JavaScript code.
 
-I invite you to https://goodstat.com.pl
+I invite you to https://goodstat.pl
