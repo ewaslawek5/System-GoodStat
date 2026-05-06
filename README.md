@@ -33,7 +33,7 @@ https://www.youtube.com/watch?v=YThBLyCoXZk
 
 I invite you to look at the GoodStat demo version, here is the access data:
 
-- url: https://goodstat.com.pl/demo
+- url: https://goodstat.pl/demo
 - login: goodstat
 - password: demo
 
