@@ -3,21 +3,12 @@ $lifetime = (60 * 60 * 24) * 7; //### (60 * 60) * wartosc w godzinach np. 7 - zn
 session_set_cookie_params($lifetime,"/",$_SERVER['SERVER_NAME']);
 session_start();
 
-	if($_SERVER['HTTP_CLIENT_IP']){
-		$nr_ip = $_SERVER['HTTP_CLIENT_IP'];
-	}
-	else if($_SERVER['HTTP_X_FORWARDED_FOR']){
-		$nr_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	}else{
-		$nr_ip = $_SERVER['REMOTE_ADDR']; 
-	}
-
+	$nr_ip = $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 	$nr_ip = trim($nr_ip);
 
 if(!isset($_SESSION['sesja_uzyt']))
 {
-	$_SESSION['sesja_uzyt'] 				= array();	
-	$_SESSION['sesja_uzyt']['wykres'] 		= 'bar'; // bar, line, radar, polarArea
+	$_SESSION['sesja_uzyt'] 				= array();
 }
 
 //#### logowanie
@@ -35,11 +26,12 @@ if(isset($_POST['wyslij_loguj'])){
 
 					$_SESSION['sesja_uzyt']['zalogowany'] 		= $login;
 					$_SESSION['sesja_uzyt']['id_loginu'] 		= $id_loginu;
+					$_SESSION['sesja_uzyt']['wykres'] 			= 'bar'; // bar, line, radar, polarArea
 					
 						//zapis do logow systemu						
 						$stmt = $db->prepare(  
 							"INSERT INTO hist_operacji (id, opis, data_utw)
-								VALUES (0, 'Zalogowal sie login: <b>$login</b>, nr.IP: $nr_ip', ".time().")"
+								VALUES (0, 'Zalogował się login: <b>$login</b>, nr.IP: $nr_ip', ".time().")"
 						);
 						
 						$stmt->execute();

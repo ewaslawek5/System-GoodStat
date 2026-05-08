@@ -1,9 +1,13 @@
 <?php
 
 //##### EKRAN
-$nazwa_tab = 'ekran'; $nazwa_tab = trim($nazwa_tab);
-if($ekran != ''){
-	ekran($nazwa_tab, $ekran);
+$nazwa_tab = 'ekran'; 
+$nazwa_tab = trim($nazwa_tab);
+
+// PHP 8.4: Upewniamy siê, ¿e zmienna $ekran istnieje, nie jest nullem i nie jest pustym ci¹giem
+// Operator ?? (null coalescing) pozwala nam bezpiecznie sprawdziæ wartoœæ nawet jeœli $ekran nie istnieje
+if (isset($ekran) && trim((string)$ekran) !== '') {
+    ekran($nazwa_tab, $ekran);
 }
 
 //##### COLOR

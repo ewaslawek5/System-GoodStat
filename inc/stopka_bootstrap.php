@@ -1,3 +1,8 @@
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
 	<!-- automatic close alert -->
 	<script type="text/javascript">
 		$(".alert").fadeTo(8000, 500).slideUp(500, function(){
@@ -5,63 +10,40 @@
 		});
 	</script>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    
-   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+  
+  <!-- Page level plugins -->
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  
 	<!-- tooltip -->
 	<script>
 		$(document).ready(function(){
 			$('[data-toggle="tooltip"]').tooltip(); 
 		});
 	</script>
-	<script src="js/prism.js"></script>
-	
-	<script>
-/*
-		//animacja menu po najechaniu myszką
-	  $('.navbar .dropdown').hover(function() {
-		$(this).find('.dropdown-menu').first().stop(true, true).slideToggle(200);
-		}, function() {
-		$(this).find('.dropdown-menu').first().stop(true, true).slideToggle(200)
-		});
 
-*/
-		// animacja menu po kliknieciu
-		$('.dropdown').on('show.bs.dropdown', function(e){
-			var $dropdown = $(this).find('.dropdown-menu');
-			var orig_margin_top = parseInt($dropdown.css('margin-top'));
-			$dropdown.css({'margin-top': (orig_margin_top + 10) + 'px', opacity: 0}).animate({'margin-top': orig_margin_top + 'px', opacity: 1}, 300, function(){
-				$(this).css({'margin-top':''});
-			});
-		});
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
 
-		$('.dropdown').on('hide.bs.dropdown', function(e){
-			var $dropdown = $(this).find('.dropdown-menu');
-			var orig_margin_top = parseInt($dropdown.css('margin-top'));
-			$dropdown.css({'margin-top': orig_margin_top + 'px', opacity: 1, display: 'block'}).animate({'margin-top': (orig_margin_top + 10) + 'px', opacity: 0}, 300, function(){
-				$(this).css({'margin-top':'', display:''});
-			});
-		});
+  <!-- Page level custom scripts 
+  <script src="js/demo/chart-area-demo.js"></script>
+  <script src="js/demo/chart-pie-demo.js"></script>-->
 
-	</script>
-	
-	<!-- top-link -->
-	<span id="top-link-block" class="hidden">
-		<a href="#top" class="btn well-sm top"  onclick="$('html,body').animate({scrollTop:0},'slow');return false;" title="przejdź na górę">
-			<i class="material-icons">arrow_upward</i>
-		</a>
-	</span>	
-	<script>
-		if ( ($(window).height() + 100) < $(document).height() ) {
-			$('#top-link-block').removeClass('hidden').affix({
-			offset: {top:100}
-		});
-		}
-	</script>
-	<!--/ top-link -->	
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
+  
+  
+  
+  
+  
+  
+  
