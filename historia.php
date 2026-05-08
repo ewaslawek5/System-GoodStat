@@ -6,137 +6,118 @@ if(file_exists('config.php')) {
 }
 	include('funkcje/funkcje.php');
 	include("inc/sesje.php");
-	
-//######## STRONNICOWANIE
-function wskaznik($strona, $liczba_stron)
-{
-    $wynik = "<span class='text-muted small'><center>strona $strona/$liczba_stron</center></span><nav aria-label='Page navigation example'><ul class='pagination justify-content-center'>";
-
-    if ($strona > 1) {
-		$wynik .= " <li class='page-item'><a class='page-link' href='historia.php?strona=1'><i class='material-icons'>first_page</i></a></li> ";
-    } else {
-        $wynik .= " <li class='page-item disabled'><a class='page-link' href='' tabindex='-1' aria-disabled='true'><i class='material-icons'>first_page</i></a></li>  ";
-    }
-
-    $poprzednia = $strona - 1;
-    if ($poprzednia > 0) {
-        $wynik .= " <li class='page-item'><a class='page-link' href='historia.php?strona=$poprzednia'><i class='material-icons'>navigate_before</i></a></li> ";
-    } else {
-        $wynik .= " <li class='page-item disabled'><a class='page-link' href=''><i class='material-icons'>navigate_before</i></a></li> ";
-    }
-
-    $nastepna = $strona + 1;
-    if ($nastepna <= $liczba_stron) {
-        $wynik .= " <li class='page-item'><a class='page-link' href='historia.php?strona=$nastepna'><i class='material-icons'>navigate_next</i></a></li> ";
-    } else {
-        $wynik .= " <li class='page-item disabled'><a class='page-link' href=''><i class='material-icons'>navigate_next</i></a></li> ";
-    }
-
-    if ($strona < $liczba_stron) {
-        $wynik .= " <li class='page-item'><a class='page-link' href='historia.php?strona=$liczba_stron'><i class='material-icons'>last_page</i></a></li> ";
-    } else {
-        $wynik .= " <li class='page-item disabled'><a class='page-link'><i class='material-icons'>last_page</i></a></li> ";
-    }
-    
-   $wynik .= "</ul></nav>";
-    return $wynik;
-
-}
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
+
 <head>
 
-<?php
+<?php	
 //--- dolaczenie plikow
 	include('inc/head.php');
 ?>
 
 </head>
-	
-<body>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
 
 <?php
-//--- dolaczenie plikow
 if(file_exists('config.php')) {
-
-	include('inc/menu.php');
-	include('inc/baner.php');
-	include('operacje/!_spis.php');
-	include('inc/pole_alerts.php');
+//--- dolaczenie plikow
+	include('inc/menu_lewe.php');
 }
 ?>
 
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
 <?php
 if(file_exists('config.php')) {
     //zainstalowany
 ?>
+		<!-- Main Content -->
+		<div id="content">
 
-<div class="container tresc">
+<?php
+//--- dolaczenie plikow
+	include('inc/menu_gora.php');
+?>
+
+<!-- ######## Begin Page Content -->
+		<div class="container-fluid">
+<?php
+//--- dolaczenie plikow
+	include('operacje/!_spis.php');
+	include('inc/pole_alerts.php');
+?>
 <?php
 	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
+// #############################################################################################
 ?>
-		<div class="page-header">
-			<h1>Historia <span></span></h1>
-		</div>
+
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Historia</h1>
+	</div>
+
+<?php
+	echo'
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Wykaz wpisów</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table  class="table table-striped small table-sm" data-order=\'[[ 0, "DESC" ]]\' data-page-length=\'10\' class="display" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr class="text-primary">
+						<th>#</th> <th style="min-width: 75px;">data</th> <th>nr.ip</th>  <th>podstrona</th>  <th>system</th>  <th>przeglądarka</th>  <th>color</th>  <th>ekran</th>  <th>język</th>  <th>user agent</th> 
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr class="text-primary">
+                      <th>#</th> <th>data</th> <th>nr.ip</th>  <th>podstrona</th>  <th>system</th>  <th>przeglądarka</th>  <th>color</th>  <th>ekran</th>  <th>język</th>  <th>user agent</th> 
+                    </tr>
+                  </tfoot>
+                  <tbody>';
 		
+				$stmt = $db->query("SELECT * FROM `historia` ORDER BY `historia`.`id` DESC");
 
-		<div class="table-responsive">
-		<table class="table table-striped table-hover small table-sm">
-		<tr>
-			<th>data</th> <th>nr.ip</th>  <th>podstrona</th>  <th>system</th>  <th>przeglądarka</th>  <th>color</th>  <th>ekran</th>  <th>język</th>  <th>user agent</th> 
-		</tr>
-<?php
-//-------------------------------------------------------------------
-//STRONNICOWANIE
-	$p = array(); //zainiciowanie tablicy $p
-	$stmt = $db->query("SELECT * FROM historia");
-	while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){$id_art = $wiersz['id']; $p[]=$id_art;}
+					while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
+						$id					= $wiersz['id'];
+						$data_utw			= $wiersz['data_utw'];	$data_utw = date('d-m-Y, H:i:s', $data_utw);
+						$ip					= $wiersz['ip'];
+						$podstrona			= $wiersz['podstrona'];
+						$system				= $wiersz['system'];
+						$przegladarki		= $wiersz['przegladarki'];
+						$color				= $wiersz['color'];
+						$ekran				= $wiersz['ekran'];
+						$jezyk				= $wiersz['jezyk'];
+						$ciaguser			= $wiersz['ciaguser'];
 
-	$liczba_rekordow = count($p); 	//liczba wszystkich rekordow
-	$rekordow_na_stronie = 30;		//liczba rekordow na stronie
-	
-	$liczba_stron = (int) (($liczba_rekordow + $rekordow_na_stronie - 1) / $rekordow_na_stronie);
-
-	if (isset($_GET['strona']) && str_ievpifr($_GET['strona'], 1, $liczba_stron)) {
-		$strona = $_GET['strona'];
-	}else{
-		$strona = 1;
-	}
-	
-	$start = ($strona - 1) * $rekordow_na_stronie;
-
-		$stmt = $db->query("SELECT * FROM `historia` ORDER BY `historia`.`id` DESC LIMIT $start ,$rekordow_na_stronie");
-
-			while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
-				$data_utw			= $wiersz['data_utw'];	$data_utw = date('d-m-Y, H:i:s', $data_utw);
-				$ip					= $wiersz['ip'];
-				$podstrona			= $wiersz['podstrona'];
-				$system				= $wiersz['system'];
-				$przegladarki		= $wiersz['przegladarki'];
-				$color				= $wiersz['color'];
-				$ekran				= $wiersz['ekran'];
-				$jezyk				= $wiersz['jezyk'];
-				$ciaguser			= $wiersz['ciaguser'];
-				
-				echo'
-				<tr>
-					<td class="text-muted small">'.$data_utw.'</td> <td class="text-muted small">'.$ip.'</td> <td class="text-muted small">'.$podstrona.'</td> <td class="text-muted small">'.$system.'</td> <td class="text-muted small">'.$przegladarki.'</td> <td class="text-muted small">'.$color.' bit.</td> <td class="text-muted small">'.$ekran.'</td> <td class="text-muted small">'.$jezyk.'</td> <td class="text-muted small">'.$ciaguser.'</td>
-				</tr>';
-			}
-?>
+						echo'
+						<tr>
+							<td class="text-muted small">'.$id.'</td> <td class="text-muted small">'.$data_utw.'</td> <td class="text-muted small">'.$ip.'</td> <td class="text-muted small">'.$podstrona.'</td> <td class="text-muted small">'.$system.'</td> <td class="text-muted small">'.$przegladarki.'</td> <td class="text-muted small">'.$color.' bit.</td> <td class="text-muted small">'.$ekran.'</td> <td class="text-muted small">'.$jezyk.'</td> <td class="text-muted small">'.$ciaguser.'</td>
+						</tr>';
+					}
+			
+	echo'
+		</tbody>
 		</table>
-		</div>
+	</div>';
+?>
 <?php
-		echo wskaznik($strona, $liczba_stron);	//stronnicowanie
+//		echo wskaznik($strona, $liczba_stron);	//stronnicowanie
 ?>
 
 		<form action="" method="post">
 			<fieldset class="border p-2">
 			
-				<legend class="w-auto">Usuń Historię</legend>			
+				<legend class="w-auto">usuń logi</legend>			
 				
-				<button type="button" class="btn btn-danger btn-lg btn-block my-4" data-toggle="modal" data-target="#okienko_usun"><i class="material-icons">delete_forever</i> Usuń Historię <i class="material-icons">delete_forever</i></button>
+				<button type="button" class="btn btn-danger btn-lg btn-block my-4" data-toggle="modal" data-target="#okienko_usun"><i class="fas fa-trash"></i> Usuń Historię <i class="fas fa-trash"></i></button>
 			
 			</fieldset>			
 		</form>
@@ -167,19 +148,19 @@ if(file_exists('config.php')) {
 						<input type="hidden" value="Historia" name="tabelka">
 				
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Nie</button>
-						<button type="submit" class="btn btn-success" name="wyslij_7" title="tak usuń">Tak</button>
+						<button type="submit" class="btn btn-success" name="wyslij_6" title="tak usuń">Tak</button>
 					</form>
 				</div>
         
 			</div>
 		</div>
-	</div>
-		
+	</div>	
+	
 	<hr />
 	
 <p>
 	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-		<i class="material-icons">live_help</i> Historia
+		<i class="fas fa-question-circle"></i> Pomoc - Historia
 	</button>
 </p>
 <div class="collapse" id="collapseExample">
@@ -188,34 +169,62 @@ if(file_exists('config.php')) {
 	</div>
 </div>
 
+
+
 </div>
-		
+<!-- end tresc -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
+// #############################################################################################
 	}else{		
 		include('inc/form_logowania.php');
 	}
-?>	
-	
+?>
 
-</div>
+		</div>
+<!-- ######## end container-fluid -->
+
+	</div>
+	<!-- End of Main Content -->
 
 <?php
-	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
-		include('inc/zalogowany_jako.php');
-	}
-
 }else{
     //instalacja
 	include('instalacja/index.php');
 }
 ?>
-
 <?php
 if(file_exists('config.php')) {
+//--- dolaczenie plikow
 	include('inc/stopka.php');
 }
+?>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<?php
+//--- dolaczenie plikow
 	include('inc/stopka_bootstrap.php');
 ?>
 
 </body>
+
 </html>

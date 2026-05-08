@@ -1,4 +1,4 @@
-  # System-GoodStat
+# System-GoodStat
 GoodStat works on the majority of available hosts, it also works on the latest version of PHP (7.3.3)
 
 Hey. I would like to share with you the script I created called the GoodStat System. You will probably think that the name is a little bit overproduced and exaggerated, but please understand that I have devoted some time to this project and I sincerely strive to make this script in the future worth the name of the System.
@@ -33,9 +33,9 @@ https://www.youtube.com/watch?v=YThBLyCoXZk
 
 I invite you to look at the GoodStat demo version, here is the access data:
 
-- url: https://demo.goodstat.pl
+- url: https://goodstat.pl/demo
 - login: goodstat
-- password: demo
+- password: goodstat
 
 # Initial activities
 - Download the GoodStat System and unpack the downloaded package.

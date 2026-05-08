@@ -5,154 +5,229 @@ if(file_exists('config.php')) {
 	include('inc/baza_polacz.php');
 }
 	include('funkcje/funkcje.php');
-	include('funkcje/funkcje_odczytu.php');
 	include("inc/sesje.php");
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
+
 <head>
 
-<?php
+<?php	
 //--- dolaczenie plikow
 	include('inc/head.php');
 ?>
 
 </head>
-	
-<body>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
 
 <?php
-//--- dolaczenie plikow
 if(file_exists('config.php')) {
-
-	include('inc/menu.php');
-	include('inc/baner.php');
-	include('operacje/!_spis.php');
-	include('inc/pole_alerts.php');
+//--- dolaczenie plikow
+	include('inc/menu_lewe.php');
 }
 ?>
 
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
 <?php
 if(file_exists('config.php')) {
     //zainstalowany
 ?>
+		<!-- Main Content -->
+		<div id="content">
 
-<div class="container tresc">
+<?php
+//--- dolaczenie plikow
+	include('inc/menu_gora.php');
+?>
+
+<!-- ######## Begin Page Content -->
+		<div class="container-fluid">
+<?php
+//--- dolaczenie plikow
+	include('operacje/!_spis.php');
+	include('inc/pole_alerts.php');
+?>
 <?php
 	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
+// #############################################################################################
 ?>
-		<div class="page-header">
-			<h1>Aktualizacja <span></span></h1>
-		</div>
 
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Aktualizacja</h1>
+	</div>
+
+          <div class="card shadow mb-4">
+
+            <div class="card-body">
+			
+			
+			
+			
+			
 		<div class="row justify-content-md-center my-1">
 			<div class="col-xl-5 col-lg-6 col-md-6">
 <?php
-if (isset($_POST['wyslij_aktualizacje'])){
-		
-		$fp = fopen("http://goodstat.com.pl/!download-goodstat/aktualizacja.txt", "r");
-		$wersja_new = fread($fp, 20); $wersja_new = trim("$wersja_new");
-		
-		if($wersja_new > $wersja_uzyt){
-			echo'
-				<form>
-					<fieldset class="border p-2">
-						<legend class="w-auto"></legend>
-						<div class="alert-success padding10" role="alert"><i class="material-icons">new_releases</i> JEST NOWA WERSJA SYSTEMU GOODSTAT DO POBRANIA...</div>
-						<div class="form-group">
+// 1. Obsługa formularza sprawdzania aktualizacji
+if (isset($_POST['wyslij_aktualizacje'])) {
 
-						</div>
-						<a class="btn btn-success btn-lg btn-block my-4" href="http://goodstat.com.pl/index.php?file=goodstat_'.$wersja_new.'.zip" role="button" title="Pobierz GoodStat"><i class="material-icons">file_download</i> Pobierz <i class="material-icons">file_download</i></a>
-					</fieldset>
-				</form>
+    // Pobieramy wersję z serwera za pomocą bezpieczniejszej metody
+    $wersja_new_raw = @file_get_contents("https://goodstat.pl/!download-goodstat/aktualizacja.txt");
+    $wersja_new = $wersja_new_raw !== false ? trim($wersja_new_raw) : $wersja_uzyt;
 
-				<div class="card">
-					<div class="card-body">
-						<h4>I teraz tak...</h4>
-						
-							<ol type="1">
-								<li class="card-text">Pobierz nową wersję i rozpakuj pobraną paczkę.</li>
-								<li class="card-text">Całą zawartość katalogu na Twoim serwerze w którym były pliki starej wersji GoodStat-u - wykasuj. Bazy danych nie ruszaj, zachowasz w ten sposób zapisane statystyki.</li>
-								<li class="card-text">Nowe rozpakowane pliki wyślij na serwer w ten sam katalog w którym znajdowała się stara wersja GoodStat-u.</li>
-								<li class="card-text">Następnie wejdź do katalogu na serwerze do którego wysłałeś nowe pliki i postępuj zgodnie z instrukcjami na ekranie żeby zainstalować nową wersję.</li>
-							</ol>
-						
-					</div>
-				</div>
+    // Używamy version_compare zamiast prostego porównania >
+    if (version_compare($wersja_new, $wersja_uzyt, '>')) {
+        ?>
+        <div class="card border-success shadow-sm mb-4">
+            <div class="card-body">
+                <div class="alert alert-success" role="alert">
+                    <i class="fas fa-download"></i> <strong>JEST NOWA WERSJA!</strong> (v. <?php echo htmlspecialchars($wersja_new); ?>)
+                </div>
+                
+                <a class="btn btn-success btn-lg btn-block my-4 py-3" 
+                   href="https://goodstat.pl/index.php?file=goodstat_<?php echo urlencode($wersja_new); ?>.zip">
+                   <i class="fas fa-cloud-download-alt"></i> Pobierz aktualizację
+                </a>
 
-			';
-		}else{
-			echo'
-				<form>
-					<fieldset class="border p-2">
-						<legend class="w-auto"></legend>
-						<div class="alert-info padding10" role="alert">Masz aktualną wersję Systemu GoodStat.</div>
-						<div class="form-group text-muted">
-						
-						</div>						
-					</fieldset>
-				</form>';
-				
-			$fp2 = fopen("http://goodstat.com.pl/!download-goodstat/wiadomosc.txt", "r");
-			$wiadomosc = fread($fp2, 2000); $wiadomosc = trim("$wiadomosc");
-			
-			echo'<div class="padding10">';
-			echo $wiadomosc;
-			echo'</div>';
-		}
+                <h4 class="mt-4"><i class="fas fa-info-circle"></i> Instrukcja aktualizacji</h4>
+                <ol class="list-group list-group-flush list-group-numbered">
+                    <li class="list-group-item">Pobierz i rozpakuj paczkę <strong>.zip</strong> na swoim komputerze.</li>
+                    <li class="list-group-item">Wykasuj pliki starej wersji z serwera.</li>
+                    <li class="list-group-item">Wgraj nowe pliki w to samo miejsce.</li>
+                    <li class="list-group-item">Uruchom system w przeglądarce i postępuj zgodnie z komunikatami instalatora.</li>
+                </ol>
+            </div>
+        </div>
+        <?php
+    } else {
 
-}else{
-?>
-				<form action="aktualizacja.php" method="post">
-					<fieldset class="border p-2">
-					
-						<legend class="w-auto"></legend>
-						<div class="form-group">
-							<i class="material-icons">youtube_searched_for</i> Sprawdź czy jest nowa wersja GoodStat-u.
-						</div>
+// 1. Konfiguracja kontekstu z limitem czasu (timeout)
+// Zapobiega to zawieszeniu panelu, gdyby strona goodstat.pl wolno działała
+$stream_options = [
+    'http' => [
+        'timeout' => 2, // 2 sekundy to optymalny czas na pobranie małego pliku txt
+        'ignore_errors' => true
+    ]
+];
+$context = stream_context_create($stream_options);
 
-					</fieldset>
-					
-					<fieldset class="border tblFooters">
-						<button type="submit" name="wyslij_aktualizacje" class="btn btn-primary btn-lg btn-block my-4" title="Kliknij żeby sprawdzić czy jest nowa wersja.">Sprawdź</button>
-					</fieldset>
-				</form>
-<?php
+// 2. Pobieranie surowych danych
+// @ wycisza ewentualne błędy połączenia (np. brak DNS)
+$wiadomosc_raw = @file_get_contents("https://goodstat.pl/!download-goodstat/wiadomosc.txt", false, $context);
+
+// 3. Logika przypisania komunikatu
+// Sprawdzamy czy pobieranie się udało I czy treść nie jest pusta po usunięciu spacji
+if ($wiadomosc_raw !== false && trim($wiadomosc_raw) !== '') {
+    $wiadomosc = trim($wiadomosc_raw);
+} else {
+    $wiadomosc = 'Brak nowych komunikatów.';
+}
+
+// 4. Wyświetlanie w interfejsie
+// Warunek: pokazujemy boks tylko, jeśli faktycznie jest jakaś nowa wiadomość
+if ($wiadomosc !== 'Brak nowych komunikatów.'): ?>
+    <div class="p-3 bg-light border rounded mt-3 shadow-sm">
+        <h6 class="text-muted mb-2">
+            <i class="fas fa-info-circle"></i> Komunikat techniczny:
+        </h6>
+        <div class="small text-dark">
+            <?php 
+                // htmlspecialchars chroni przed XSS, nl2br zamienia entery na <br>
+                echo nl2br($wiadomosc); 
+            ?>
+        </div>
+    </div>
+<?php endif;
+    }
+
+} else {
+    // 2. Widok początkowy (przycisk sprawdzenia)
+    ?>
+    <form action="aktualizacja.php" method="post" class="mt-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <i class="fab fa-searchengin fa-4x text-primary"></i>
+                </div>
+                <h5>Sprawdź czy jest nowa wersja GoodStat-u</h5>
+                <p class="text-muted small">System połączy się z serwerem goodstat.pl w celu weryfikacji wersji.</p>
+                
+                <button type="submit" name="wyslij_aktualizacje" class="btn btn-primary btn-lg btn-block mt-3">
+                    <i class="fas fa-sync-alt"></i> Sprawdź teraz
+                </button>
+            </div>
+        </div>
+    </form>
+    <?php
 }
 ?>
 			</div>
 		</div>
+			
+			
+			
+			
+			
+			</div>
+		  </div>
 
 
 
-</div>
-		
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
+// #############################################################################################
 	}else{		
 		include('inc/form_logowania.php');
 	}
-?>	
-	
+?>
 
-</div>
+		</div>
+<!-- ######## end container-fluid -->
+
+	</div>
+	<!-- End of Main Content -->
 
 <?php
-	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
-		include('inc/zalogowany_jako.php');
-	}
-
 }else{
     //instalacja
 	include('instalacja/index.php');
 }
 ?>
-
 <?php
 if(file_exists('config.php')) {
+//--- dolaczenie plikow
 	include('inc/stopka.php');
 }
+?>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<?php
+//--- dolaczenie plikow
 	include('inc/stopka_bootstrap.php');
 ?>
 
 </body>
+
 </html>

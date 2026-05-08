@@ -8,86 +8,133 @@ if(file_exists('config.php')) {
 	include('funkcje/funkcje_odczytu.php');
 	include("inc/sesje.php");
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
+
 <head>
 
-<?php
+<?php	
 //--- dolaczenie plikow
 	include('inc/head.php');
 ?>
 
 </head>
-	
-<body>
 
-<!-- start statystyki stron GoodStat -->
+<body id="page-top">
+
+<!-- start System GoodStat -->
 <script language='javascript'>
 <!--
-var ipath='localhost/statystyki_goodstat_com_pl/www_klient-PDO-2/!_strona/zapis'
-document.write('<SCR' + 'IPT LANGUAGE="JavaScript" SRC="http://'+ ipath +'/stat.js"><\/SCR' + 'IPT>');
+var ipath='http://localhost/www/statystyki_goodstat_com_pl/goodstat_2/zapis'
+document.write('<SCR' + 'IPT LANGUAGE="JavaScript" SRC="'+ ipath +'/stat.js"><\/SCR' + 'IPT>');
 //-->
 </script>
-<!-- stop statystyki stron GoodStat -->
+<!-- stop System GoodStat -->
 
+
+
+<!-- Page Wrapper -->
+<div id="wrapper">
 
 <?php
-//--- dolaczenie plikow
 if(file_exists('config.php')) {
-
-	include('inc/menu.php');
-	include('inc/baner.php');
-	include('operacje/!_spis.php');
-	include('inc/pole_alerts.php');
+//--- dolaczenie plikow
+	include('inc/menu_lewe.php');
 }
 ?>
 
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
 <?php
 if(file_exists('config.php')) {
     //zainstalowany
 ?>
+		<!-- Main Content -->
+		<div id="content">
 
-<div class="container tresc">
+<?php
+//--- dolaczenie plikow
+	include('inc/menu_gora.php');
+?>
+
+<!-- ######## Begin Page Content -->
+		<div class="container-fluid">
+<?php
+//--- dolaczenie plikow
+	include('operacje/!_spis.php');
+	include('inc/pole_alerts.php');
+?>
 <?php
 	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
+// #############################################################################################
 ?>
-		<div class="page-header">
-			<h1>Pusta Strona <span></span></h1>
+
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Strona Testowa</h1>
+	</div>
+
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">Tytuł_Okienka</h6>
 		</div>
+		<div class="card-body">
+
 		
 
+		</div>
+	</div>
 
 
 
 
-</div>
-		
+
+
+
+
+
+
+
+
+
+
 <?php
+// #############################################################################################
 	}else{		
 		include('inc/form_logowania.php');
 	}
-?>	
-	
+?>
 
-</div>
+		</div>
+<!-- ######## end container-fluid -->
+
+	</div>
+	<!-- End of Main Content -->
 
 <?php
-	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
-		include('inc/zalogowany_jako.php');
-	}
-
 }else{
     //instalacja
 	include('instalacja/index.php');
 }
 ?>
-
 <?php
 if(file_exists('config.php')) {
+//--- dolaczenie plikow
 	include('inc/stopka.php');
 }
+?>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<?php
+//--- dolaczenie plikow
 	include('inc/stopka_bootstrap.php');
 ?>
 
 </body>
+
 </html>

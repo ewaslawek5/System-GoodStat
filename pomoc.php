@@ -8,43 +8,63 @@ if(file_exists('config.php')) {
 	include('funkcje/funkcje_odczytu.php');
 	include("inc/sesje.php");
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
+
 <head>
 
-<?php
+<?php	
 //--- dolaczenie plikow
 	include('inc/head.php');
 ?>
 
 </head>
-	
-<body>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
 
 <?php
-//--- dolaczenie plikow
 if(file_exists('config.php')) {
-
-	include('inc/menu.php');
-	include('inc/baner.php');
-	include('operacje/!_spis.php');
-	include('inc/pole_alerts.php');
+//--- dolaczenie plikow
+	include('inc/menu_lewe.php');
 }
 ?>
 
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
 <?php
 if(file_exists('config.php')) {
     //zainstalowany
 ?>
+		<!-- Main Content -->
+		<div id="content">
 
-<div class="container tresc">
+<?php
+//--- dolaczenie plikow
+	include('inc/menu_gora.php');
+?>
+
+<!-- ######## Begin Page Content -->
+		<div class="container-fluid">
+<?php
+//--- dolaczenie plikow
+	include('operacje/!_spis.php');
+	include('inc/pole_alerts.php');
+?>
 <?php
 	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
+// #############################################################################################
 ?>
-		<div class="page-header">
-			<h1>Pomoc <span></span></h1>
-		</div>
-		
+
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Pomoc</h1>
+	</div>
+
+	<div class="card shadow mb-4">
+		<div class="card-body">
 
 	<dl class="row text-justify">
 		<dt class="col-sm-3 text-uppercase"><h4>Zestawienie</h4></dt>
@@ -147,6 +167,10 @@ if(file_exists('config.php')) {
 					<ul>
 						<li>Dane zawarte w tabeli wskazują nazwę robotów internetowych które trafiły na stronę mnitorowaną, są zliczane odsłony, zapisany też jest ciąg tz. User Agent robota (boota). Każde takie wejście jest sumowane i zapisywane, ponadto rubryka Data wskazuje na datę kiedy coś takiego miało miejsce.</li>
 					</ul>
+				<li class="font-weight-bold">Sekcja HEAD</li>
+					<ul>
+						<li>Sekcja HEAD, to sekcja nagłówkowa dokumentu, chociaż niewidoczna na stronie, pełni bardzo ważną funkcję informacyjną dla wyszukiwarek, ma też ważne znaczenie dla pozycjonowania strony, jest nagłówkiem w dokumencie HTML lub XHTML. Pomiędzy otwierającym i zamykającym znacznikiem HEAD znajduje się prolog dokumentu. Zwykle jest to kilka znaczników, przede wszystkim tytuł strony, informacje o autorze strony, kodowaniu i instrukcje dla przeglądarki oraz wyszukiwarek.</li>
+					</ul>
 			</ul>			
 			<hr />
 		</dd> 
@@ -185,36 +209,59 @@ if(file_exists('config.php')) {
  
 	</dl>
 
+		</div>
+	</div>
 
 
-</div>
-		
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
+// #############################################################################################
 	}else{		
 		include('inc/form_logowania.php');
 	}
-?>	
-	
+?>
 
-</div>
+		</div>
+<!-- ######## end container-fluid -->
+
+	</div>
+	<!-- End of Main Content -->
 
 <?php
-	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
-		include('inc/zalogowany_jako.php');
-	}
-
 }else{
     //instalacja
 	include('instalacja/index.php');
 }
 ?>
-
 <?php
 if(file_exists('config.php')) {
+//--- dolaczenie plikow
 	include('inc/stopka.php');
 }
+?>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<?php
+//--- dolaczenie plikow
 	include('inc/stopka_bootstrap.php');
 ?>
 
 </body>
+
 </html>
