@@ -31,16 +31,25 @@
 	
 	echo'
 	<div class="table-responsive">
-		<table class="table table-striped table-hover small table-sm">
+		<table class="table table-striped small table-sm">
 		<tr>
-			<th>dzień</th> <th>data</th> <th>dzień tygodnia</th> <th>wizyty</th> <th>wykres wizyt</th> <th>odsłony</th> <th>wykres odsłon</th> 
+			<th>dzień</th> <th>data</th> <th>dzień tygodnia</th> <th>wykres wizyt</th> <th>wykres odsłon</th> 
 		</tr>';
 	
-				reset($dane); // wskazanie na poczڴek tablicy
+			// PHP 8.4: Upewniamy się, że $dane to tablica przed użyciem funkcji tablicowych
+			if (is_array($dane)) {
+				reset($dane); // wskazanie na początek tablicy
 				$wartosc = current($dane);
-				
-				if($od==0){$a = -1;}	
-				$dzien = 1;
+			} else {
+				$wartosc = null; // wartość domyślna, jeśli dane nie są tablicą
+			}
+
+			// PHP 8.4: Bezpieczne sprawdzenie $od (użycie operatora ?? zapobiega błędom Undefined variable)
+			if (($od ?? 0) == 0) {
+				$a = -1;
+			}
+
+			$dzien = 1;
 				
 			for ($i = 0; $i < count($dane); $i++) {
 				
@@ -64,13 +73,13 @@
 				//wizyty
 				if($dane[$i] != 0){
 					// obliczanie wysokosci slupka
-					$szer = ($dane[$i] / $naj) * 200; $szer = round($szer, 0);
+					$szer = ($dane[$i] / $naj) * 100; $szer = round($szer, 0);
 				}else{$szer = 1;}
 				
 				//odslony
 				if($dane_ods[$i] != 0){
 					// obliczanie wysokosci slupka
-					$szer_ods = ($dane_ods[$i] / $naj_ods) * 200; $szer_ods = round($szer_ods, 0);
+					$szer_ods = ($dane_ods[$i] / $naj_ods) * 100; $szer_ods = round($szer_ods, 0);
 				}else{$szer_ods = 1;}	
 
 				$dni_w_tygodniu 	= new DateTime($_GET['rok'].'-'.$_GET['m'].'-'.$dzien.'');
@@ -88,8 +97,8 @@
 				
 				echo'
 				<tr>
-					<td class="text-muted">'.$dzien_roku.'</td> <td><a href="nr_ip.php?data_ip='.$dzien.'-'.$_GET['m'].'-'.$_GET['rok'].'&wyslij=" data-toggle="tooltip" data-placement="right" title="Zobacz wszystkie NR.IP w tym dniu">'.$dzien.' '.$miesiac.' '.$_GET['rok'].'</a></td> <td class="text-muted">'.$dzien_tyg.'</td> <td><span class="label-dane">'.$dane[$i].'</span></td> <td><div class="row_slupki_poziom ttt" style="width: '.$szer.'px;" data-toggle="tooltip" data-placement="right" title="'.$dzien.' '.$miesiac.' '.$_GET['rok'].', '.$dane[$i].' wiz."></div></td> 
-					<td><span class="label-dane">'.$dane_ods[$i].'</span></td> <td><div class="row_slupki_poziom ttt" style="width: '.$szer_ods.'px;" data-toggle="tooltip" data-placement="right" title="'.$dzien.' '.$miesiac.' '.$_GET['rok'].', '.$dane_ods[$i].' ods."></div></td>
+					<td class="text-muted">'.$dzien_roku.'</td> <td><a href="nr_ip.php?data_ip='.$dzien.'-'.$_GET['m'].'-'.$_GET['rok'].'&wyslij=" data-toggle="tooltip" data-placement="right" title="Zobacz wszystkie NR.IP w tym dniu">'.$dzien.' '.$miesiac.' '.$_GET['rok'].'</a></td> <td class="text-muted">'.$dzien_tyg.'</td> <td><div class="progress" data-toggle="tooltip" data-placement="right" title="'.$dzien.' '.$miesiac.' '.$_GET['rok'].', '.number_format(str_replace(',','.',$dane[$i]), 0, '.', ' ').' wiz."><div class="progress-bar" role="progressbar" style="width: '.$szer.'%;">'.number_format(str_replace(',','.',$dane[$i]), 0, '.', ' ').'</div></div></td> 
+					<td><div class="progress" data-toggle="tooltip" data-placement="right" title="'.$dzien.' '.$miesiac.' '.$_GET['rok'].', '.$dane_ods[$i].' ods."><div class="progress-bar bg-success" role="progressbar" style="width: '.$szer_ods.'%;">'.number_format(str_replace(',','.',$dane_ods[$i]), 0, '.', ' ').'</div></div></td>
 				</tr>';
 						
 						
@@ -108,13 +117,13 @@
 	
 				echo'
 				<tr>
-					<th></th> <th></th> <th></th> <th></th> <th></th> <th></th> <th></th> 
+					<th></th> <th></th> <th></th> <th></th> <th></th> 
 				</tr>
 				<tr>
-					<th colspan="3">średnio na dzień:</th> <th><span class="label-dane">'.$sr.'</span></th> <th></th> <th><span class="label-dane">'.$sr_ods.'</span></th> <th></th> 
+					<th colspan="3">średnio na dzień:</th> <th><span class="label-dane">'.$sr.'</span></th> <th><span class="label-dane">'.number_format(str_replace(',','.',$sr_ods), 1, '.', ' ').'</span></th> <th></th> 
 				</tr>
 				<tr>
-					<th colspan="3">suma:</th> <th><span class="label-dane">'.$suma_wartosci.'</span></th> <th></th> <th><span class="label-dane">'.$suma_wartosci_ods.'</span></th> <th></th>
+					<th colspan="3">suma:</th> <th><span class="label-dane">'.number_format(str_replace(',','.',$suma_wartosci), 0, '.', ' ').'</span></th> <th><span class="label-dane">'.number_format(str_replace(',','.',$suma_wartosci_ods), 0, '.', ' ').'</span></th> <th></th>
 				</tr>';
 
 	

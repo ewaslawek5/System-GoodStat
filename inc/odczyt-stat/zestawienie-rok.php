@@ -54,15 +54,19 @@
 	
 	echo'
 	<div class="table-responsive">
-		<table class="table table-striped table-hover small table-sm">
+		<table class="table table-striped small table-sm">
 		<tr>
-			<th>rok</th> <th>miesiąc</th> <th>wizyty</th> <th>wykres wizyt</th> <th>odsłony</th> <th>wykres odsłon</th> 
+			<th>rok</th> <th>miesiąc</th> <th>wykres wizyt</th> <th>wykres odsłon</th> 
 		</tr>';
 	
 				reset($dane); // wskazanie na poczڴek tablicy
 				$wartosc = current($dane);
 				
-				if($od==0){$a = -1;}	
+$od = $_GET['od'] ?? 0; // Ustawienie domyślne, jeśli brak w adresie URL
+
+if ($od == 0) {
+    $a = -1;
+}	
 
 			for ($i = 0; $i < count($dane); $i++) {
 				$a++;
@@ -83,32 +87,34 @@
 				//wizyty
 				if($dane[$i] != 0){
 					// obliczanie wysokosci slupka
-					$szer = ($dane[$i] / $naj) * 200; $szer = round($szer, 0);
+					$szer = ($dane[$i] / $naj) * 100; $szer = round($szer, 0);
 				}else{$szer = 1;}
 				
 				//odslony
 				if($dane_ods[$i] != 0){
 					// obliczanie wysokosci slupka
-					$szer_ods = ($dane_ods[$i] / $naj_ods) * 200; $szer_ods = round($szer_ods, 0);
+					//$szer_ods = ($dane_ods[$i] / $naj_ods) * 200; $szer_ods = round($szer_ods, 0);
+					$szer_ods = ($dane_ods[$i] / $naj_ods) * 100; $szer_ods = round($szer_ods, 0);
 				}else{$szer_ods = 1;}				
-				
+				//	<div class="row_slupki_poziom ttt" style="width: '.$szer_ods.'px;" data-toggle="tooltip" data-placement="right" title="'.$miesiac.' '.$_GET['rok'].', '.$dane_ods[$i].' ods."></div>
+					
 			echo'
 			<tr>
-				<td class="text-muted">'.$_GET['rok'].'</td> <td class="text-muted"><a href="zestawienie.php?rok='.$_GET['rok'].'&m='.$m.'" role="button" data-toggle="tooltip" data-placement="right" title="Zobacz zestawienie Wizyt i Odsłon w miesiącu: '.$miesiac.'">'.$miesiac.'</a></td> <td><span class="label-dane">'.$dane[$i].'</span></td> <td><div class="row_slupki_poziom ttt" style="width: '.$szer.'px;" data-toggle="tooltip" data-placement="right" title="'.$miesiac.' '.$_GET['rok'].', '.$dane[$i].' wiz."></div></td>
-				<td><span class="label-dane">'.$dane_ods[$i].'</span></td> <td><div class="row_slupki_poziom ttt" style="width: '.$szer_ods.'px;" data-toggle="tooltip" data-placement="right" title="'.$miesiac.' '.$_GET['rok'].', '.$dane_ods[$i].' ods."></div></td>
+				<td class="text-muted">'.$_GET['rok'].'</td> <td class="text-muted"><a href="zestawienie.php?rok='.$_GET['rok'].'&m='.$m.'" role="button" data-toggle="tooltip" data-placement="right" title="Zobacz zestawienie Wizyt i Odsłon w miesiącu: '.$miesiac.'">'.$miesiac.'</a></td> <td><div class="progress" data-toggle="tooltip" data-placement="right" title="'.$miesiac.' '.$_GET['rok'].', '.$dane[$i].' wiz."><div class="progress-bar" role="progressbar" style="width: '.$szer_ods.'%;">'.number_format(str_replace(',','.',$dane[$i]), 0, '.', ' ').'</div></div></td>
+				<td><div class="progress" data-toggle="tooltip" data-placement="right" title="'.$miesiac.' '.$_GET['rok'].', '.$dane_ods[$i].' ods."><div class="progress-bar bg-success" role="progressbar" style="width: '.$szer_ods.'%;">'.number_format(str_replace(',','.',$dane_ods[$i]), 0, '.', ' ').'</div></div></td>
 			</tr>';
 
 			}//zam while
 	
 				echo'
 				<tr>
-					<th></th> <th></th> <th></th> <th></th> <th></th> <th></th> 
+					<th></th> <th></th> <th></th> <th></th>
 				</tr>
 				<tr>
-					<th colspan="2">średnio na miesiąc:</th> <th><span class="label-dane">'.$sr.'</span></th> <th></th> <th><span class="label-dane">'.$sr_ods.'</span></th> <th></th>
+					<th colspan="2">średnio na miesiąc:</th> <th><span class="label-dane">'.$sr.'</span></th> <th><span class="label-dane">'.$sr_ods.'</span></th> <th></th>
 				</tr>
 				<tr>
-					<th colspan="2">suma:</th> <th><span class="label-dane">'.$suma_wartosci.'</span></th> <th></th> <th><span class="label-dane">'.$suma_wartosci_ods.'</span></th> <th></th>
+					<th colspan="2">suma:</th> <th><span class="label-dane">'.number_format(str_replace(',','.',$suma_wartosci), 0, '.', ' ').'</span></th> <th><span class="label-dane">'.number_format(str_replace(',','.',$suma_wartosci_ods), 0, '.', ' ').'</span></th> <th></th>
 				</tr>';
 
 	

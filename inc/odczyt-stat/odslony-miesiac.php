@@ -77,9 +77,10 @@ for ($i = 0; $i < count($dane); $i++) {
 	});
 	</script>	
 
-		
+	<hr />
+	
 <div class="table-responsive">
-	<table class="table table-striped table-hover small table-sm">
+	<table class="table table-striped small table-sm">
 		<thead>
 			<tr>
 				<th>dzień roku</th>
@@ -129,8 +130,8 @@ for ($i = 0; $i < count($dane); $i++) {
 					<td class="text-muted">'.$d_roku.'</td>
 					<td class="text-muted"><a href="nr_ip.php?data_ip='.$d_miesiaca.'-'.$_GET['m'].'-'.$_GET['rok'].'&wyslij=" data-toggle="tooltip" data-placement="right" title="Zobacz wszystkie NR.IP w tym dniu">'.$d_miesiaca.' '.$miesiac.' '.$_GET['rok'].'</a></td>
 					<td class="text-muted">'.$dzien_tyg.'</td>
-					<th class="text-muted">'.$ods.'</th>
-					<td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#okienko'.$d_roku.'" title="Zobacz ilość Odsłon w godzinach w tym dniu"><i class="material-icons">bar_chart</i></button></td>';
+					<th class="text-muted">'.number_format(str_replace(',','.',$ods), 0, '.', ' ').'</th>
+					<td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#okienko'.$d_roku.'" title="Zobacz ilość Odsłon w godzinach w tym dniu"><i class="far fa-chart-bar"></i></button></td>';
 					
 					
 					// modal
@@ -172,10 +173,19 @@ for($a=0; $a<24; $a++){
 			<center>
 				<div class="wykres">';
 				
-				reset($dane_g); // wskazanie na poczڴek tablicy
-				$wartosc = current($dane_g);
+				// PHP 8.4: Sprawdzamy, czy $dane_g jest tablicą, aby uniknąć błędu w funkcjach reset/current
+				if (is_array($dane_g) && !empty($dane_g)) {
+					reset($dane_g); // przesunięcie wewnętrznego wskaźnika na początek
+					$wartosc = current($dane_g); // pobranie pierwszej wartości
+				} else {
+					$wartosc = 0; // wartość domyślna, jeśli tablica jest pusta
+				}
+
+				// PHP 8.4: Bezpieczna obsługa zmiennej $od (zapobiega Warning: Undefined variable)
+				if (($od ?? 0) == 0) {
+					$a = -1;
+				}
 				
-				if($od==0){$a = -1;}	
 			for ($iii = 0; $iii < count($dane_g); $iii++) 
 			{
 				$a++;
@@ -217,7 +227,7 @@ for($a=0; $a<24; $a++){
 					
 					echo'
 					<td>					
-						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#okienko_ip'.$d_roku.'" data-toggle="tooltip" data-placement="bottom" title="Zobacz ilość Odsłon, poszczególnych adresów IP"><i class="material-icons">bar_chart</i></button>					
+						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#okienko_ip'.$d_roku.'" data-toggle="tooltip" data-placement="bottom" title="Zobacz ilość Odsłon, poszczególnych adresów IP"><i class="far fa-chart-bar"></i></button>					
 					</td>';
 					
 				//modal ip
@@ -291,13 +301,13 @@ for($a=0; $a<24; $a++){
 				<th></th>
 				<th></th>
 				<th>suma</th>
-				<th colspan="3"><?php echo $suma_wartosci; ?></th>				
+				<th colspan="3"><?php echo number_format(str_replace(',','.',$suma_wartosci), 0, '.', ' '); ?></th>				
 			</tr>
 			<tr>
 				<th></th>
 				<th></th>
 				<th>średnio</th>
-				<th colspan="3"><?php echo $sr; ?></th>
+				<th colspan="3"><?php echo number_format(str_replace(',','.',$sr), 1, '.', ' '); ?></th>
 			</tr>
 		</tbody>
 	</table>	
@@ -307,7 +317,7 @@ for($a=0; $a<24; $a++){
 	
 <p>
 	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-		<i class="material-icons">live_help</i> Odsłona - Co to znaczy ?
+		<i class="fas fa-question-circle"></i> Odsłona - Co to znaczy ?
 	</button>
 </p>
 <div class="collapse" id="collapseExample">
