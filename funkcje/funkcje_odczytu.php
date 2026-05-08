@@ -14,34 +14,52 @@ function szukaj_naj_rok($nazwa_tabeli)
 //##### szukanie największej liczby
 function szukaj_naj_godziny($nazwa_tabeli)
 {
-		global $naj_g, $db; //oto największa liczba
+    global $naj_g, $db; //oto największa liczba
 
-		$stmt = $db->query("SELECT wejscia FROM `$nazwa_tabeli` ORDER BY `$nazwa_tabeli`.`wejscia` DESC LIMIT 1");
+    // PHP 8.4: Inicjalizacja wartości domyślnej. 
+    // Jeśli tabela jest pusta, $naj_g musi być zerem, a nie "nieistniejącą" zmienną.
+    $naj_g = 0;
 
-			while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
-				$naj_g = $wiersz['wejscia'];
-			}
+    // PHP 8.4: Nazwa tabeli w grawisach dla bezpieczeństwa nazw (np. roczników)
+    $stmt = $db->query("SELECT wejscia FROM `$nazwa_tabeli` ORDER BY `$nazwa_tabeli`.`wejscia` DESC LIMIT 1");
+
+    if ($stmt) {
+        while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
+            // PHP 8.4: Rzutowanie na (int) dla pewności typu
+            $naj_g = (int)($wiersz['wejscia'] ?? 0);
+        }
+    }
 }
 
 //##### szukanie największej liczby
 function szukaj_naj($nazwa_tabeli, $nazwa_slupka, $pokaz_miesiac, $pokaz_rok)
 {
-	global $naj, $db; //oto największa liczba
-	
-		$dni_w_miesiacu = new DateTime($pokaz_rok.'-'.$pokaz_miesiac.'-01');
-		$liczba_dni 	= $dni_w_miesiacu->format("t");	//ilość dni w miesiącu
-		$dzien_od 		= $dni_w_miesiacu->format("z");	//Dzień roku (Zaczynając od 0) 0 aż do 365
-	
-	$stmt = $db->query("SELECT $nazwa_slupka FROM $nazwa_tabeli LIMIT $dzien_od, $liczba_dni");
-	
-	$tablica = array(); //zainicjowanie tablicy bez wartosci
-	
-	while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){	
-		$wartosc = $wiersz["$nazwa_slupka"];
-		$tablica[] = $wartosc;
-	}
-	rsort($tablica); 
-	$naj = $tablica[0];
+    global $naj, $db; // oto największa liczba
+    
+    // PHP 8.4: Jawne rzutowanie na string przy tworzeniu daty
+    $dni_w_miesiacu = new DateTime((string)$pokaz_rok . '-' . (string)$pokaz_miesiac . '-01');
+    $liczba_dni     = $dni_w_miesiacu->format("t"); // ilość dni w miesiącu
+    $dzien_od       = $dni_w_miesiacu->format("z"); // Dzień roku (Zaczynając od 0) 0 aż do 365
+    
+    // SQL: Dodajemy grawisy wokół kolumny i tabeli (kluczowe dla nazw typu 14wiz)
+    $stmt = $db->query("SELECT `$nazwa_slupka` FROM `$nazwa_tabeli` LIMIT $dzien_od, $liczba_dni");
+    
+    $tablica = array(); // zainicjowanie tablicy bez wartosci
+    
+    if ($stmt) {
+        while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){    
+            $wartosc = $wiersz[$nazwa_slupka];
+            $tablica[] = $wartosc;
+        }
+    }
+
+    // PHP 8.4: Sprawdzamy czy tablica nie jest pusta przed sortowaniem i przypisaniem
+    if (!empty($tablica)) {
+        rsort($tablica); 
+        $naj = $tablica[0];
+    } else {
+        $naj = 0; // Wartość domyślna, jeśli brak danych w bazie
+    }
 }
 
 //##### szukanie największej liczby
@@ -68,19 +86,26 @@ function szukaj_naj_ods($nazwa_tabeli, $nazwa_slupka, $pokaz_miesiac, $pokaz_rok
 //##### szukanie danych
 function szukaj_danych($nazwa_tabeli, $nazwa_slupka, $pokaz_miesiac, $pokaz_rok)
 {
-	global $dane, $db; 
-	
-		$dni_w_miesiacu = new DateTime($pokaz_rok.'-'.$pokaz_miesiac.'-01');
-		$liczba_dni 	= $dni_w_miesiacu->format("t");	//ilość dni w miesiącu
-		$dzien_od 		= $dni_w_miesiacu->format("z");	//Dzień roku (Zaczynając od 0) 0 aż do 365
-	//	$dzien_do 		= $dzien_od + $liczba_dni;
-	
-	$stmt = $db->query("SELECT $nazwa_slupka FROM $nazwa_tabeli LIMIT $dzien_od, $liczba_dni ");
+    global $dane, $db; 
+    
+    // PHP 8.4: Upewniamy się, że parametry są traktowane jako tekst/liczby w poprawnym formacie
+    // Tworzymy obiekt daty dla pierwszego dnia danego miesiąca
+    $dni_w_miesiacu = new DateTime((string)$pokaz_rok . '-' . (string)$pokaz_miesiac . '-01');
+    
+    $liczba_dni = $dni_w_miesiacu->format("t"); // ilość dni w miesiącu
+    $dzien_od   = $dni_w_miesiacu->format("z"); // Dzień roku (Zaczynając od 0) 0 aż do 365
+    
+    // SQL: Dodajemy grawisy wokół nazwy słupka i tabeli. 
+    // To krytyczne, gdy nazwa kolumny zaczyna się od cyfry (np. 12wiz).
+    $stmt = $db->query("SELECT `$nazwa_slupka` FROM `$nazwa_tabeli` LIMIT $dzien_od, $liczba_dni");
 
-	while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){	
-		$wartosc = $wiersz["$nazwa_slupka"];
-		$dane[] = $wartosc;
-	}
+    if ($stmt) {
+        while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){    
+            // Pobieramy wartość używając nazwy słupka jako klucza
+            $wartosc = $wiersz[$nazwa_slupka];
+            $dane[] = $wartosc;
+        }
+    }
 }
 
 //##### szukanie danych
