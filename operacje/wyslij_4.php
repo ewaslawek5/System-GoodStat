@@ -3,18 +3,18 @@
 	if (isset($_POST['wyslij_4'])){
 
 			//usuwa
-			$stmt = $db->prepare("DELETE FROM color WHERE id='{$_POST['id']}'");
+			$stmt = $db->prepare("DELETE FROM uzyt_stat WHERE id='{$_POST['id']}'");
 
 			if(@$stmt->execute()){
 			
 							$uruchom_alert = 'tak'; 
 							$rodzaj_alert = 'ok';
-							$tresc_info = 'Pozycja została usunięta - Prawidłowo ('.$_POST['color'].').';
+							$tresc_info = 'Pozycja <b>'.$_POST['login'].'</b> została usunięta - Prawidłowo';
 							
 						//zapis do logow systemu
 						$stmttt = $db->query(
 							"INSERT INTO hist_operacji (id, opis, data_utw)
-							VALUES (0, 'Usuniecie pozycji: <b>".$_POST['color']." bit</b> z dzialu Liczba Kolorow', ".time().")"
+							VALUES (0, 'Usunięcie Użytkownika: <b>".$_POST['login']."</b> z Systemu GoodStat', ".time().")"
 						);
 			}else{
 							$uruchom_alert = 'tak'; 

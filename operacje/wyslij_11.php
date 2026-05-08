@@ -3,24 +3,23 @@
 	if (isset($_POST['wyslij_11'])){
 
 			//usuwa
-			$stmt = $db->prepare("TRUNCATE `hist_operacji`;");	
-			//kasujemy  
-				if(@$stmt->execute()){
-					
-						$uruchom_alert = 'tak'; 
-						$rodzaj_alert = 'ok';
-						$tresc_info = 'Dokonano Resetu Dziennika Operacji - Prawidłowo.';
-						
+			$stmt = $db->prepare("DELETE FROM jezyk WHERE id='{$_POST['id']}'");
+
+			if(@$stmt->execute()){
+			
+							$uruchom_alert = 'tak'; 
+							$rodzaj_alert = 'ok';
+							$tresc_info = 'Pozycja została usunięta - Prawidłowo ('.$_POST['jezyk'].').';
+							
 						//zapis do logow systemu
 						$stmttt = $db->query(
 							"INSERT INTO hist_operacji (id, opis, data_utw)
-							VALUES (0, 'Dokonanie Resetu dzialu Dziennik Operacji', ".time().")"
+							VALUES (0, 'Usunięcie pozycji: <b>".$_POST['jezyk']."</b> z działu Język', ".time().")"
 						);
-						
-				}else{
+			}else{
 							$uruchom_alert = 'tak'; 
 							$rodzaj_alert = 'uwaga';
-							$tresc_info = 'Resetu NIE dokonano - coś poszło nie tak...';
-				}
+							$tresc_info = 'Coś poszło źle, pozycja NIE została usunięta.';
+			}
 
 	}
