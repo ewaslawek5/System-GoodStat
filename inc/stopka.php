@@ -15,7 +15,7 @@
 				<div class="col-md-5 col-xs-12">
 					<ul class="list-unstyled small">
 						<li>Copyright <?php echo date('Y'); ?> <a href="https://goodstat.pl/" target="_blank" data-toggle="tooltip" data-placement="right" title="Darmowy system do zliczania statystyk stron www">Statystyki GoodStat</a> - project home page</li>
-						<li><a href="https://github.com/goodstat/System-GoodStat/blob/master/LICENSE.md" target="_blank">goodstat/System-GoodStat</a> is licensed under the MIT License.</li>
+						<li><a href="https://github.com/ewaslawek5/System-GoodStat/blob/master/LICENSE.md" target="_blank">ewaslawek5/System-GoodStat</a> is licensed under the MIT License.</li>
 						<li><a href="mailto:kontakt@goodstat.pl">kontakt@goodstat.pl</a></li>
 						<li><a href="" role="button" class="popover-test" data-toggle="modal" data-target="#regulamin_stopka" title="Regulamin GoodStat-u">Regulamin</a> Systemu GoodStat</li>
 					</ul>					
@@ -32,8 +32,8 @@
 			</div>
 				<hr />
 					<ul class="list-unstyled small">
-						<li class="list-inline-item"><a href="https://www.facebook.com/goodstat/" target="_blank" data-toggle="tooltip" data-placement="left" title="GoodStat na Facebook-u"><img src="images/facebook_circle.png" style="width: 40px; padding: 5px;" /></a></li>
-						<li class="list-inline-item"><a href="https://www.youtube.com/playlist?list=PLgHkwif2YIlh3PDPkem6OSedMKqHUfZdu" target="_blank" data-toggle="tooltip" data-placement="left" title="GoodStat na Youtube"><img src="images/youtube.png" style="width: 40px; padding: 5px;" /></a></li>
+						<li class="list-inline-item"><a href="https://www.facebook.com/SystemGoodStat" target="_blank" data-toggle="tooltip" data-placement="left" title="GoodStat na Facebook-u"><img src="images/facebook_circle.png" style="width: 40px; padding: 5px;" /></a></li>
+						<li class="list-inline-item"><a href="https://www.youtube.com/@SystemGoodStat" target="_blank" data-toggle="tooltip" data-placement="left" title="GoodStat na Youtube"><img src="images/youtube.png" style="width: 40px; padding: 5px;" /></a></li>
 					</ul>
 		</div>
 	</footer>
