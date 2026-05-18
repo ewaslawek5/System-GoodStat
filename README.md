@@ -27,7 +27,7 @@ GOODSTAT SYSTEM functionality
 
 # Installation of the GOODSTAT SYSTEM:
 
-https://www.youtube.com/watch?v=YThBLyCoXZk
+https://www.youtube.com/@SystemGoodStat
 
 # Demo GoodStat
 

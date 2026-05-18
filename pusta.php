@@ -22,17 +22,6 @@ if(file_exists('config.php')) {
 
 <body id="page-top">
 
-<!-- start System GoodStat -->
-<script language='javascript'>
-<!--
-var ipath='http://localhost/www/statystyki_goodstat_com_pl/goodstat_2/zapis'
-document.write('<SCR' + 'IPT LANGUAGE="JavaScript" SRC="'+ ipath +'/stat.js"><\/SCR' + 'IPT>');
-//-->
-</script>
-<!-- stop System GoodStat -->
-
-
-
 <!-- Page Wrapper -->
 <div id="wrapper">
 
