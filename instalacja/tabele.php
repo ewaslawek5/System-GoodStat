@@ -1,73 +1,95 @@
 <?php
 
 //##### KLIENT	
-$nazwa_tab = $_POST['nazwa_bazy'].'.'.'klient_stat'; 
+// U¿ywamy operatora ?? aby unikn¹æ Warningu w PHP 8.4, jeœli nazwa_bazy nie dotar³a w POST
+$baza = $_POST['nazwa_bazy'] ?? '';
+$nazwa_tab = $baza . '.klient_stat'; 
 
-//wyczyszczenie 
-$sql = "TRUNCATE TABLE $nazwa_tab";
-$db->exec($sql);
+if (!empty($baza)) {
+    // 1. Najpierw usuwamy star¹ tabelê, jeœli istnieje (zamiast TRUNCATE)
+    // To najbezpieczniejszy sposób przy nowej instalacji
+    $sql_drop = "DROP TABLE IF EXISTS $nazwa_tab";
+    $db->exec($sql_drop);
 
-$sql = "CREATE TABLE $nazwa_tab (
-		`id` int(11) NOT NULL AUTO_INCREMENT,		
-		`mail` varchar(100) NOT NULL DEFAULT '-' COMMENT '',
-		`wersja` varchar(20) NOT NULL DEFAULT '-' COMMENT '',
-		
-		`data_inst` int(15) NOT NULL,
-
-	PRIMARY KEY  (`id`)
-	)";
-	
-	$db->exec($sql);
+    // 2. Tworzymy tabelê od nowa
+    $sql_create = "CREATE TABLE $nazwa_tab (
+            `id` int(11) NOT NULL AUTO_INCREMENT,		
+            `mail` varchar(100) NOT NULL DEFAULT '-',
+            `wersja` varchar(20) NOT NULL DEFAULT '-',
+            `data_inst` int(15) NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    
+    $db->exec($sql_create);
+} else {
+    die("B³¹d: Nie podano nazwy bazy danych.");
+}
 
 	$h = $_POST['haslo1'];
 	$haslo1 = sha1($h); $haslo_zakodowane = cleanText($haslo1);
 
 	$stmt = $db->prepare( 
 		"INSERT INTO $nazwa_tab (id, mail, wersja, data_inst)
-		VALUES (0, '{$_POST['email']}', '1.3', ".time().")"
+		VALUES (0, '{$_POST['email']}', '2.1', ".time().")"
 	); if(@$stmt->execute()){}//dodanie danych do tabeli
 
 //##### UZYTKOWNICY	
-$nazwa_tab = $_POST['nazwa_bazy'].'.'.'uzyt_stat';
+$baza = $_POST['nazwa_bazy'] ?? '';
+$nazwa_tab = $baza . '.uzyt_stat';
 
-//wyczyszczenie 
-$sql = "TRUNCATE TABLE $nazwa_tab";
-$db->exec($sql);
+if (!empty($baza)) {
+    // 1. Usuwamy tabelê jeœli istnieje, zamiast TRUNCATE (rozwi¹zuje b³¹d Fatal Error)
+    $db->exec("DROP TABLE IF EXISTS $nazwa_tab");
 
-$sql = "CREATE TABLE $nazwa_tab (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`login` varchar(100) NOT NULL DEFAULT '-' COMMENT '',
-		`haslo` varchar(200) NOT NULL DEFAULT '-' COMMENT '',
-		`mail` varchar(100) NOT NULL DEFAULT '-' COMMENT '',
-		`data_utw` int(15) NOT NULL,	
+    // 2. Tworzymy strukturê tabeli
+    $sql_create = "CREATE TABLE $nazwa_tab (
+            `id` int NOT NULL AUTO_INCREMENT,
+            `login` varchar(100) NOT NULL DEFAULT '-',
+            `haslo` varchar(200) NOT NULL DEFAULT '-',
+            `mail` varchar(100) NOT NULL DEFAULT '-',
+            `data_utw` int(15) NOT NULL,	
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+    $db->exec($sql_create);
 
-	PRIMARY KEY  (`id`)
-	)";
-	
-	$db->exec($sql);
-		
-	$stmt = $db->prepare( 
-		"INSERT INTO $nazwa_tab (id, login, haslo, mail, data_utw)
-		VALUES (0, '{$_POST['login']}', '$haslo1', '{$_POST['email']}', ".time().")"
-	); if(@$stmt->execute()){}//dodanie danych do tabeli
+    // 3. Bezpieczne dodawanie u¿ytkownika (Prepared Statements)
+    // PHP 8.4 wymaga pe³nego bezpieczeñstwa - nie wk³adamy $_POST bezpoœrednio do SQL!
+    $stmt = $db->prepare("INSERT INTO $nazwa_tab (login, haslo, mail, data_utw) VALUES (:login, :haslo, :mail, :data)");
+    
+    $stmt->execute([
+        'login' => $_POST['login'] ?? '',
+        'haslo' => $haslo1, // Zak³adam, ¿e has³o jest ju¿ zahashowane wczeœniej
+        'mail'  => $_POST['email'] ?? '',
+        'data'  => time()
+    ]);
+}
 
 //##### HISTORIA OPERACJI SYSTEMU GOODSTAT
-$nazwa_tab = $_POST['nazwa_bazy'].'.'.'hist_operacji'; 
+$baza = $_POST['nazwa_bazy'] ?? '';
+$nazwa_tab = $baza . '.hist_operacji'; 
 
-$sql = "CREATE TABLE $nazwa_tab (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`opis` varchar(500) NOT NULL DEFAULT '-' COMMENT '',
-		`data_utw` int(15) NOT NULL,
+if (!empty($baza)) {
+    // 1. Bezpieczne usuwanie tabeli przed jej utworzeniem (unikasz b³êdu "Table already exists")
+    $db->exec("DROP TABLE IF EXISTS $nazwa_tab");
 
-	PRIMARY KEY  (`id`)
-	)";
-	
-	$db->exec($sql);
-		
-$stmt = $db->prepare( 
-		"INSERT INTO $nazwa_tab (id, opis, data_utw)
-		VALUES (0, 'Instalacja systemu GoodStat na serwerze', ".time().")"
-	); if(@$stmt->execute()){}//dodanie danych do tabeli
+    // 2. Tworzenie tabeli
+    $sql_create = "CREATE TABLE $nazwa_tab (
+            `id` int NOT NULL AUTO_INCREMENT,
+            `opis` varchar(500) NOT NULL DEFAULT '-',
+            `data_utw` int(15) NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+    
+    $db->exec($sql_create);
+        
+    // 3. Dodanie pierwszego wpisu (zmienione na bezpieczne Prepared Statement)
+    $stmt = $db->prepare("INSERT INTO $nazwa_tab (opis, data_utw) VALUES (:opis, :data)");
+    
+    $stmt->execute([
+        'opis' => 'Instalacja systemu GoodStat na serwerze',
+        'data' => time()
+    ]);
+}
 	
 //#####				#####
 //#####	STATYSTYKI	#####
