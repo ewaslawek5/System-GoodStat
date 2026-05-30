@@ -18,4 +18,4 @@ $tresc_email = '
 </div>';
 
 	//wyslanie maila
-	$wyslanie_maila = new Mailer_GoodStat("admin@goodstat.com.pl", "admin@goodstat.com.pl", "Zainstalowano System GoodStat", "$tresc_email");
+	$wyslanie_maila = new Mailer_GoodStat("kontakt@goodstat.pl", "kontakt@goodstat.pl", "Zainstalowano System GoodStat", "$tresc_email");
