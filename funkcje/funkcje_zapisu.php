@@ -3,38 +3,40 @@
 //##### ekran
 function ekran($nazwa_tab, $ekran)
 {
-			global $db;
-			
-			$stmt = $db->query("SELECT * FROM $nazwa_tab WHERE ekran='$ekran' LIMIT 1");
-			
-			if($stmt->rowCount() == 0){
-			
-					//dodanie nowej przegladarki do tabeli
-					$stmt = $db->prepare(
-						"INSERT INTO $nazwa_tab (id, ekran, wejscia)
-						VALUES ('0', '$ekran', '1')"
-					);		
-					$stmt->execute(); //dodanie nr ip do tabeli
-					
-					global $db;
-			}else{
-
-					//wykonanie zapytania
-					if(@$stmt->execute()){
-						
-						while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
-							$wejscia = $wiersz['wejscia']; $wejscia++;
-							$nr_ip_id = $wiersz['id'];
-							
-							$stmt = $db->prepare("UPDATE $nazwa_tab SET `wejscia` = '$wejscia' WHERE `id` = '".$nr_ip_id."' LIMIT 1;");
-							$stmt->execute();	//WYKONANIE ZAPYTANIA	
-						}// while
-					}//if
-					
-					global $db;
-				}
-				
-				global $db;
+    global $db;
+    
+    // PHP 8.4: Rzutujemy $ekran na string, aby unikn¹æ problemów z typem danych w prepare
+    $ekran_val = (string)$ekran;
+    
+    // 1. Sprawdzamy, czy dana rozdzielczoœæ ju¿ istnieje
+    // U¿ywamy grawisów wokó³ $nazwa_tab, bo nazwy tabel mog¹ zaczynaæ siê od cyfr (np. 2026_ekran)
+    $stmt = $db->prepare("SELECT id, wejscia FROM `$nazwa_tab` WHERE `ekran` = :ekran LIMIT 1");
+    $stmt->execute([':ekran' => $ekran_val]);
+    $wiersz = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$wiersz) {
+        // 2. Dodanie nowej rozdzielczoœci
+        // PHP 8.4: Jawne przekazanie parametrów zapobiega b³êdom przy pustych danych
+        $stmt = $db->prepare(
+            "INSERT INTO `$nazwa_tab` (ekran, wejscia) 
+             VALUES (:ekran, 1)"
+        );        
+        $stmt->execute([':ekran' => $ekran_val]); 
+        
+    } else {
+        // 3. Aktualizacja istniej¹cego wpisu
+        // PHP 8.4: Rzutujemy na (int), aby inkrementacja by³a w 100% bezpieczna typologicznie
+        $wejscia = (int)($wiersz['wejscia'] ?? 0); 
+        $wejscia++;
+        $nr_ip_id = $wiersz['id'];
+        
+        // Wykonujemy UPDATE korzystaj¹c z ID
+        $stmt = $db->prepare("UPDATE `$nazwa_tab` SET `wejscia` = :wejscia WHERE `id` = :id LIMIT 1");
+        $stmt->execute([
+            ':wejscia' => $wejscia,
+            ':id'      => $nr_ip_id
+        ]);
+    }
 }
 
 //##### color
@@ -256,58 +258,66 @@ function slowa($nazwa_tab, $slowa, $wyszu, $data_dodania)
 //##### roboty
 function jakiRobot() 
 {
-	global $ciaguser;
-	
-    $u_agent = $_SERVER['HTTP_USER_AGENT']; //tak bylo: 	$u_agent = $_SERVER['HTTP_USER_AGENT'];
+    // PHP 8.x: Korzystamy z globalnych zmiennych zgodnie z Twoj¹ struktur¹
+    global $ciaguser, $db;
+    
+    // Zabezpieczenie przed brakiem indeksu i rzutowanie na string (standard PHP 8)
+    $agent = (string)($ciaguser ?? $_SERVER['HTTP_USER_AGENT'] ?? '');
+    
     $nazwa_robota = '';
 
-    //First get the platform?
-    if (preg_match('/Yahoo/', $ciaguser)) {
-        $nazwa_robota = 'Yahoo';
+    // Jeœli agent jest pusty, od razu zwracamy pusty wynik lub oznaczamy jako nieznany
+    if ($agent === '') {
+        return '';
     }
-    elseif (preg_match('/Googlebot/', $ciaguser)) {
+
+    // U¿ywamy match() lub ulepszonego bloku if z uwzglêdnieniem nowoczesnych botów
+    // Kolejnoœæ ma znaczenie - bardziej specyficzne boty powinny byæ wy¿ej
+    
+    if (preg_match('/(GPTBot|ChatGPT-User|OpenAI)/i', $agent)) {
+        $nazwa_robota = 'ChatGPT Bot';
+    }
+    elseif (preg_match('/(ClaudeBot|Anthropic)/i', $agent)) {
+        $nazwa_robota = 'Claude Bot';
+    }
+    elseif (preg_match('/(Googlebot|Google-InspectionTool|Google)/i', $agent)) {
         $nazwa_robota = 'Googlebot';
     }
-    elseif (preg_match('/Google/', $ciaguser)) {
-        $nazwa_robota = 'Googlebot';
-    }
-    elseif (preg_match('/BingPreview/', $ciaguser)) {
+    elseif (preg_match('/(Bingbot|BingPreview|Bing)/i', $agent)) {
         $nazwa_robota = 'BingBot';
     }
-    elseif (preg_match('/Baiduspider/', $ciaguser)) {
-        $nazwa_robota = 'Baidu Spider';
+    elseif (preg_match('/(DuckDuckBot|DuckDuckGo)/i', $agent)) {
+        $nazwa_robota = 'DuckDuckGo Bot';
     }
-    elseif (preg_match('/Yandex/', $ciaguser)) {
+    elseif (preg_match('/(Yandex|YandexBot)/i', $agent)) {
         $nazwa_robota = 'Yandex Bot';
     }
-    elseif (preg_match('/Sosoimagespider/', $ciaguser)) {
-        $nazwa_robota = 'Soso Spider';	
+    elseif (preg_match('/Baidu/i', $agent)) {
+        $nazwa_robota = 'Baidu Spider';
     }
-    elseif (preg_match('/Exabot/', $ciaguser)) {
-        $nazwa_robota = 'ExaBot';	
-    }
-    elseif (preg_match('/curl/', $ciaguser)) {
-        $nazwa_robota = 'Curl';
-    }
-    elseif (preg_match('/Sogou/', $ciaguser)) {
-        $nazwa_robota = 'Sogou Spider';
-    }
-    elseif (preg_match('/facebookexternalhit/', $ciaguser)) {
+    elseif (preg_match('/facebookexternalhit|facebook/i', $agent)) {
         $nazwa_robota = 'Facebook External Hit';
     }
-    elseif (preg_match('/FeedWordPress/', $ciaguser)) {
+    elseif (preg_match('/(AhrefsBot|SemrushBot|DotBot|MJ12bot)/i', $agent)) {
+        $nazwa_robota = 'SEO Spider';
+    }
+    elseif (preg_match('/Applebot/i', $agent)) {
+        $nazwa_robota = 'AppleBot';
+    }
+    elseif (preg_match('/Twitterbot|XBot/i', $agent)) {
+        $nazwa_robota = 'X/Twitter Bot';
+    }
+    elseif (preg_match('/(Soso|Sogou|msnbot)/i', $agent)) {
+        $nazwa_robota = 'Inne Wyszukiwarki';
+    }
+    elseif (preg_match('/WordPress/i', $agent)) {
         $nazwa_robota = 'FeedWordPress Bot';
     }
-	
-	global $ciaguser;
-	return $nazwa_robota;
-	
-/*
-    return array(
-     //   'userAgent' => $u_agent,
-        'name'      => $nazwa_bota,
-    );
-*/
-} 
+    elseif (preg_match('/curl/i', $agent)) {
+        $nazwa_robota = 'Curl';
+    }
+    
+    return $nazwa_robota;
+}
 /**/
 ?>
