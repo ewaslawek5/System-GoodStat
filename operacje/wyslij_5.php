@@ -1,25 +1,61 @@
 <?php	
 //-- wyslanie zapytania
-	if (isset($_POST['wyslij_5'])){
+if(isset($_POST['wyslij_5'])){
 
-			//usuwa
-			$stmt = $db->prepare("DELETE FROM jezyk WHERE id='{$_POST['id']}'");
-
-			if(@$stmt->execute()){
-			
+		$problem = FALSE;
+		$zarejestrowany = 'nie';
+						
+				//sprawdzenie czy wypelniono pola
+				if (empty($_POST['l'])){
+					$problem = TRUE;
+					
 							$uruchom_alert = 'tak'; 
-							$rodzaj_alert = 'ok';
-							$tresc_info = 'Pozycja została usunięta - Prawidłowo ('.$_POST['jezyk'].').';
+							$rodzaj_alert = 'uwaga';
+							$tresc_info = 'Podaj Swój Login!';
+				}
+				//inne sprawdzenia				
+					$stmt = $db->query("SELECT * FROM uzyt_stat WHERE login='{$_POST['l']}' LIMIT 1");				
+						
+							if($stmt->rowCount() == 1){
+
+							}else{
+								//loginu nie znaleziono
+								$problem = TRUE;
+								
+								$uruchom_alert = 'tak'; 
+								$rodzaj_alert = 'uwaga';
+								$tresc_info = 'Loginu nie znaleziono!';
 							
+							}
+
+			if (!$problem){
+
+						$haslo = generujHaslo();
+						$haslo_zakodowane = sha1($haslo);
+	
+						//zapisanie nowego hasla do bazy
+						$stmt_haslo = $db->prepare("UPDATE uzyt_stat SET haslo='$haslo_zakodowane' WHERE login='{$_POST['l']}' LIMIT 1;"); 
+						
+				//kasujemy  
+				if(@$stmt_haslo->execute()){
+					
+						$uruchom_alert = 'tak'; 
+						$rodzaj_alert = 'ok';
+						$tresc_info = 'Nowe Hasło to: <strong>'.$haslo.'</strong>.';
+						
 						//zapis do logow systemu
 						$stmttt = $db->query(
 							"INSERT INTO hist_operacji (id, opis, data_utw)
-							VALUES (0, 'Usuniecie pozycji: <b>".$_POST['jezyk']."</b> z dzialu Jezyk', ".time().")"
+							VALUES (0, 'Wygenerowanie nowego hasła przez login: <b>{$_POST['l']}</b>', ".time().")"
 						);
-			}else{
+						
+				}else{
 							$uruchom_alert = 'tak'; 
 							$rodzaj_alert = 'uwaga';
-							$tresc_info = 'Coś poszło źle, pozycja NIE została usunięta.';
+							$tresc_info = 'Hasła NIE zresetowano - coś poszło nie tak...';
+				}						
+						
+				$zarejestrowany = 'tak';
 			}
 
-	}
+}

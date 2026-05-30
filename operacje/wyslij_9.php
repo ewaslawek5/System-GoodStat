@@ -3,18 +3,18 @@
 	if (isset($_POST['wyslij_9'])){
 
 			//usuwa
-			$stmt = $db->prepare("DELETE FROM roboty WHERE id='{$_POST['id']}'");
+			$stmt = $db->prepare("DELETE FROM ekran WHERE id='{$_POST['id']}'");
 
 			if(@$stmt->execute()){
 			
 							$uruchom_alert = 'tak'; 
 							$rodzaj_alert = 'ok';
-							$tresc_info = 'Pozycja została usunięta - Prawidłowo';
+							$tresc_info = 'Pozycja została usunięta - Prawidłowo ('.$_POST['ekran'].').';
 							
 						//zapis do logow systemu
 						$stmttt = $db->query(
 							"INSERT INTO hist_operacji (id, opis, data_utw)
-							VALUES (0, 'Usuniecie pozycji z dzialu Roboty', ".time().")"
+							VALUES (0, 'Usunięcie pozycji: <b>".$_POST['ekran']."</b> z działu Rozdzielczość', ".time().")"
 						);
 			}else{
 							$uruchom_alert = 'tak'; 
