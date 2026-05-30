@@ -7,131 +7,105 @@ if(file_exists('config.php')) {
 	include('funkcje/funkcje.php');
 	include('funkcje/funkcje_odczytu.php');
 	include("inc/sesje.php");
-	
-//######## STRONNICOWANIE
-function wskaznik($strona, $liczba_stron)
-{
-    $wynik = "<span class='text-muted small'><center>strona $strona/$liczba_stron</center></span><nav aria-label='Page navigation example'><ul class='pagination justify-content-center'>";
-
-    if ($strona > 1) {
-		$wynik .= " <li class='page-item'><a class='page-link' href='liczba_kolorow.php?strona=1'><i class='material-icons'>first_page</i></a></li> ";
-    } else {
-        $wynik .= " <li class='page-item disabled'><a class='page-link' href='' tabindex='-1' aria-disabled='true'><i class='material-icons'>first_page</i></a></li>  ";
-    }
-
-    $poprzednia = $strona - 1;
-    if ($poprzednia > 0) {
-        $wynik .= " <li class='page-item'><a class='page-link' href='liczba_kolorow.php?strona=$poprzednia'><i class='material-icons'>navigate_before</i></a></li> ";
-    } else {
-        $wynik .= " <li class='page-item disabled'><a class='page-link' href=''><i class='material-icons'>navigate_before</i></a></li> ";
-    }
-
-    $nastepna = $strona + 1;
-    if ($nastepna <= $liczba_stron) {
-        $wynik .= " <li class='page-item'><a class='page-link' href='liczba_kolorow.php?strona=$nastepna'><i class='material-icons'>navigate_next</i></a></li> ";
-    } else {
-        $wynik .= " <li class='page-item disabled'><a class='page-link' href=''><i class='material-icons'>navigate_next</i></a></li> ";
-    }
-
-    if ($strona < $liczba_stron) {
-        $wynik .= " <li class='page-item'><a class='page-link' href='liczba_kolorow.php?strona=$liczba_stron'><i class='material-icons'>last_page</i></a></li> ";
-    } else {
-        $wynik .= " <li class='page-item disabled'><a class='page-link'><i class='material-icons'>last_page</i></a></li> ";
-    }
-    
-   $wynik .= "</ul></nav>";
-    return $wynik;
-
-}
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
+
 <head>
 
-<?php
+<?php	
 //--- dolaczenie plikow
 	include('inc/head.php');
 ?>
 
 </head>
-	
-<body>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
 
 <?php
-//--- dolaczenie plikow
 if(file_exists('config.php')) {
-
-	include('inc/menu.php');
-	include('inc/baner.php');
-	include('operacje/!_spis.php');
-	include('inc/pole_alerts.php');
+//--- dolaczenie plikow
+	include('inc/menu_lewe.php');
 }
 ?>
 
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
 <?php
 if(file_exists('config.php')) {
     //zainstalowany
 ?>
+		<!-- Main Content -->
+		<div id="content">
 
-<div class="container tresc">
+<?php
+//--- dolaczenie plikow
+	include('inc/menu_gora.php');
+?>
+
+<!-- ######## Begin Page Content -->
+		<div class="container-fluid">
+<?php
+//--- dolaczenie plikow
+	include('operacje/!_spis.php');
+	include('inc/pole_alerts.php');
+?>
 <?php
 	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
+// #############################################################################################
 ?>
-		<div class="page-header">
-			<h1>Kolory <span></span></h1>
-		</div>
-		
+
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Kolory</h1>
+	</div>
+	
 <?php
 	$tab_danych = array(); //zainicjowanie tablicy bez wartosci
 	szukaj_danych4('color', 'wejscia', "color");
 ?>
 
-<?php			
-//-------------------------------------------------------------------
-//STRONNICOWANIE
-	$p = array(); //zainiciowanie tablicy $p
-	
-	$stmt = $db->query("SELECT * FROM color");
-	while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){$id_art = $wiersz['id']; $p[]=$id_art;}
-
-	$liczba_rekordow = count($p); 	//liczba wszystkich rekordow
-	$rekordow_na_stronie = 10;		//liczba rekordow na stronie
-	
-	$liczba_stron = (int) (($liczba_rekordow + $rekordow_na_stronie - 1) / $rekordow_na_stronie);
-
-	if (isset($_GET['strona']) && str_ievpifr($_GET['strona'], 1, $liczba_stron)) {
-		$strona = $_GET['strona'];
-	}else{
-		$strona = 1;
-	}
-	
-	$start = ($strona - 1) * $rekordow_na_stronie;
-			
+<?php
 	echo'
-	<div class="table-responsive">
-		<table class="table table-striped table-hover small table-sm">
-		<tr>
-			<th>kolory</th> <th>wizyty</th> <th>wykres</th> <th>usuń</th>
-		</tr>';
-
-		szukaj_naj_godziny('color');
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Zebrane Dane</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table  class="table table-striped small table-sm" data-order=\'[[ 1, "DESC" ]]\' data-page-length=\'10\' class="display" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr class="text-primary">
+						<th>kolory</th> <th>wizyty</th> <th>wykres</th> <th>usuń</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr class="text-primary">
+						<th>kolory</th> <th>wizyty</th> <th>wykres</th> <th>usuń</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>';
+				  
+				szukaj_naj_godziny('color');
 		
-		$stmt = $db->query("SELECT * FROM `color` ORDER BY `color`.`wejscia` DESC LIMIT $start ,$rekordow_na_stronie");
+				$stmt = $db->query("SELECT * FROM `color` ORDER BY `color`.`wejscia` DESC");
 
-			while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
-				
-				$id = $wiersz['id'];
-				$color = $wiersz['color'];
-				$wejscia = $wiersz['wejscia'];
-				
-				if($wejscia != 0){
-					// obliczanie wysokosci slupka
-					$szer = ($wejscia / $naj_g) * 200; $szer = round($szer, 0);
-				}else{$szer = 1;}
-				
+					while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
+						$id = $wiersz['id'];
+						$color = $wiersz['color'];
+						$wejscia = $wiersz['wejscia'];
+						
+						if($wejscia != 0){
+							// obliczanie wysokosci slupka
+							$szer = ($wejscia / $naj_g) * 100; $szer = round($szer, 0);
+						}else{$szer = 1;}
+
 				echo'
 				<tr>
-					<td class="text-muted">'.$color.' bit</td> <td class="text-muted">'.$wejscia.'</td> <td><div class="row_slupki_poziom ttt" style="width: '.$szer.'px;" data-toggle="tooltip" data-placement="right" title="'.$wejscia.' wiz."title="'.$wejscia.' wiz."></div></td> <td><button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#szczegoly'.$id.'" title="Usuń"><i class="material-icons">delete_forever</i></button></td> 
+					<td class="text-muted">'.$color.'</td> <td class="text-muted">'.$wejscia.'</td> <td><div class="progress" data-toggle="tooltip" data-placement="left" title="'.$wejscia.' wiz."><div class="progress-bar" role="progressbar" style="width: '.$szer.'%;">'.$wejscia.' wiz.</div></div></td> <td><button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#szczegoly'.$id.'" title="Usuń"><i class="fas fa-trash-alt"></i></button></td> 
 				</tr>';
 
 					//szczegoly
@@ -155,7 +129,7 @@ if(file_exists('config.php')) {
 											<li class="list-group-item">
 												<div class="row">
 													<div class="col-md-3">nazwa</div>						
-													<div class="col-md-9"><b>'.$color.' bit</b></div>						
+													<div class="col-md-9"><b>'.$color.'</b></div>						
 												</div>
 											</li>									
 										</ul>
@@ -164,32 +138,29 @@ if(file_exists('config.php')) {
 								<!-- Modal footer -->
 								<div class="modal-footer">
 										<input type="hidden" value="'.$id.'" name="id">
-										<input type="hidden" value="'.$color.' bit" name="color">
+										<input type="hidden" value="'.$color.'" name="color">
 								
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">Nie</button>
-										<button type="submit" class="btn btn-success" name="wyslij_4" title="tak usuń">Tak</button>
+										<button type="submit" class="btn btn-success" name="wyslij_10" title="tak usuń">Tak</button>
 									</form>
 								</div>
 						
 							</div>
 						</div>
 					</div>
-					<!-- end Modal -->';				
-			}
+					<!-- end Modal -->';	
+
+					}
 			
 	echo'
+		</tbody>
 		</table>
 	</div>';
 ?>
-<?php
-		echo wskaznik($strona, $liczba_stron);	//stronnicowanie
-?>
 
-	<hr />
-	
 <p>
 	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-		<i class="material-icons">live_help</i> Pomoc
+		<i class="fas fa-question-circle"></i> Pomoc
 	</button>
 </p>
 <div class="collapse" id="collapseExample">
@@ -201,33 +172,56 @@ if(file_exists('config.php')) {
 
 
 </div>
-		
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
+// #############################################################################################
 	}else{		
 		include('inc/form_logowania.php');
 	}
-?>	
-	
+?>
 
-</div>
+		</div>
+<!-- ######## end container-fluid -->
+
+	</div>
+	<!-- End of Main Content -->
 
 <?php
-	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
-		include('inc/zalogowany_jako.php');
-	}
-
 }else{
     //instalacja
 	include('instalacja/index.php');
 }
 ?>
-
 <?php
 if(file_exists('config.php')) {
+//--- dolaczenie plikow
 	include('inc/stopka.php');
 }
+?>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<?php
+//--- dolaczenie plikow
 	include('inc/stopka_bootstrap.php');
 ?>
 
 </body>
+
 </html>

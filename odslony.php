@@ -8,86 +8,130 @@ if(file_exists('config.php')) {
 	include('funkcje/funkcje_odczytu.php');
 	include("inc/sesje.php");
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
+
 <head>
 
-<?php
+<?php	
 //--- dolaczenie plikow
 	include('inc/head.php');
 ?>
 
 </head>
-	
-<body>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
 
 <?php
-//--- dolaczenie plikow
 if(file_exists('config.php')) {
-
-	include('inc/menu.php');
-	include('inc/baner.php');
-	include('inc/pole_alerts.php');
+//--- dolaczenie plikow
+	include('inc/menu_lewe.php');
 }
 ?>
 
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
 <?php
 if(file_exists('config.php')) {
     //zainstalowany
 ?>
+		<!-- Main Content -->
+		<div id="content">
 
-<div class="container tresc">
+<?php
+//--- dolaczenie plikow
+	include('inc/menu_gora.php');
+?>
+
+<!-- ######## Begin Page Content -->
+		<div class="container-fluid">
+<?php
+//--- dolaczenie plikow
+	include('operacje/!_spis.php');
+	include('inc/pole_alerts.php');
+?>
 <?php
 	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
+// #############################################################################################
 ?>
-		<div class="page-header">
-			<h1>Odsłony <span><?php echo 'Rok: '.$_GET['rok']; ?></span></h1>
-		</div>		
+
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Odsłony <small><?php echo 'Rok: '.$_GET['rok']; ?></small></h1>
+	</div>
+
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">Zebrane Dane</h6>
+		</div>
+		<div class="card-body">
+
 <div class="row">
 <div class="col-sm">
 	<div class="btn-group" role="group" aria-label="...">
 
 		<div class="btn-group" role="group">
 			<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<?php echo 'Rok <b>'.$_GET['rok'].'</b>'; ?>
+				<?php 
+					// PHP 8.4: Bezpieczne pobranie roku z GET lub ustawienie bieżącego
+					$wybrany_rok = $_GET['rok'] ?? date('Y');
+					echo 'Rok <b>' . htmlspecialchars((string)$wybrany_rok) . '</b>'; 
+				?>
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-	<?php
-			$stmt = $db->query("SELECT * FROM `lata_kal` ORDER BY `lata_kal`.`lata` ASC");
+				<?php
+					// Pobieramy listę lat z bazy danych
+					$stmt = $db->query("SELECT * FROM `lata_kal` ORDER BY `lata_kal`.`lata` ASC");
 
-				while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
-					$rok = $wiersz['lata'];
-					echo'<a href="odslony.php?rok='.$rok.'" class="dropdown-item'; if($rok == $_GET['rok']){echo' active';} echo'">'.$rok.'</a>';
-				}
-	?>
+					if ($stmt) {
+						while($wiersz = $stmt->fetch(PDO::FETCH_ASSOC)){
+							$rok_z_bazy = $wiersz['lata'];
+							
+							// PHP 8.4: Sprawdzamy aktywność roku bez generowania Warning
+							$czy_aktywny = ($rok_z_bazy == $wybrany_rok) ? ' active' : '';
+							
+							echo '<a href="odslony.php?rok=' . $rok_z_bazy . '" class="dropdown-item' . $czy_aktywny . '">' . $rok_z_bazy . '</a>';
+						}
+					}
+				?>
 			</ul>
-			
 		</div>
-		
-		
+				
 		<div class="btn-group" role="group">
 			<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<?php echo 'Miesiąc <b>'.$_GET['m'].'</b>'; ?>
+				<?php 
+					// PHP 8.4: Bezpieczne pobranie parametrów z GET
+					$m_get = $_GET['m'] ?? date('n');
+					$rok_get = $_GET['rok'] ?? date('Y');
+					
+					// Tablica pomocnicza do wyświetlenia nazwy w przycisku
+					$miesiace_nazwy = [
+						1 => 'Styczeń', 2 => 'Luty', 3 => 'Marzec', 4 => 'Kwiecień',
+						5 => 'Maj', 6 => 'Czerwiec', 7 => 'Lipiec', 8 => 'Sierpień',
+						9 => 'Wrzesień', 10 => 'Październik', 11 => 'Listopad', 12 => 'Grudzień'
+					];
+					
+					$nazwa_aktualna = $miesiace_nazwy[(int)$m_get] ?? 'Wybierz';
+					echo 'Miesiąc <b>' . htmlspecialchars($nazwa_aktualna) . '</b>'; 
+				?>
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-	<?php				
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=1" class="dropdown-item'; if($_GET['m'] == 1){echo' active';} echo'">Styczeń</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=2" class="dropdown-item'; if($_GET['m'] == 2){echo' active';} echo'">Luty</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=3" class="dropdown-item'; if($_GET['m'] == 3){echo' active';} echo'">Marzec</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=4" class="dropdown-item'; if($_GET['m'] == 4){echo' active';} echo'">Kwiecień</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=5" class="dropdown-item'; if($_GET['m'] == 5){echo' active';} echo'">Maj</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=6" class="dropdown-item'; if($_GET['m'] == 6){echo' active';} echo'">Czerwiec</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=7" class="dropdown-item'; if($_GET['m'] == 7){echo' active';} echo'">Lipiec</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=8" class="dropdown-item'; if($_GET['m'] == 8){echo' active';} echo'">Sierpień</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=9" class="dropdown-item'; if($_GET['m'] == 9){echo' active';} echo'">Wrzesień</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=10" class="dropdown-item'; if($_GET['m'] == 10){echo' active';} echo'">Październik</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=11" class="dropdown-item'; if($_GET['m'] == 11){echo' active';} echo'">Listopad</a>';
-					echo'<a href="odslony.php?rok='.$_GET['rok'].'&m=12" class="dropdown-item'; if($_GET['m'] == 12){echo' active';} echo'">Grudzień</a>';
-	?>
+				<?php
+					// PHP 8.4: Generowanie linków w pętli - czyściej i bezpieczniej
+					foreach ($miesiace_nazwy as $nr => $nazwa) {
+						// Sprawdzamy czy dany miesiąc jest aktualnie wybrany
+						$active = ($m_get == $nr) ? ' active' : '';
+						
+						// Budujemy link używając bezpiecznych zmiennych
+						echo '<a href="odslony.php?rok=' . htmlspecialchars((string)$rok_get) . '&m=' . $nr . '" class="dropdown-item' . $active . '">' . $nazwa . '</a>';
+					}
+				?>
 			</ul>
-			
 		</div>
 		
 	</div>
@@ -132,34 +176,59 @@ if(!isset($_GET['m']) AND !isset($_GET['t'])){
 }
 ?>
 
-</div><!-- /tresc -->
-		
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
+// #############################################################################################
 	}else{		
 		include('inc/form_logowania.php');
 	}
-?>	
-	
+?>
 
-</div>
+		</div>
+<!-- ######## end container-fluid -->
+
+	</div>
+	<!-- End of Main Content -->
 
 <?php
-	if(isset($_SESSION['sesja_uzyt']['zalogowany'])){
-		include('inc/zalogowany_jako.php');
-	}
-
 }else{
     //instalacja
 	include('instalacja/index.php');
 }
 ?>
-
 <?php
 if(file_exists('config.php')) {
+//--- dolaczenie plikow
 	include('inc/stopka.php');
 }
+?>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<?php
+//--- dolaczenie plikow
 	include('inc/stopka_bootstrap.php');
 ?>
 
 </body>
+
 </html>

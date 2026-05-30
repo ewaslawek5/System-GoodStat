@@ -27,15 +27,15 @@ GOODSTAT SYSTEM functionality
 
 # Installation of the GOODSTAT SYSTEM:
 
-https://www.youtube.com/watch?v=YThBLyCoXZk
+https://www.youtube.com/@SystemGoodStat
 
 # Demo GoodStat
 
 I invite you to look at the GoodStat demo version, here is the access data:
 
-- url: https://goodstat.com.pl/demo
+- url: https://goodstat.pl/demo
 - login: goodstat
-- password: demo
+- password: goodstat
 
 # Initial activities
 - Download the GoodStat System and unpack the downloaded package.
