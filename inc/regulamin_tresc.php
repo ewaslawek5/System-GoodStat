@@ -6,7 +6,7 @@
 						
 						<li>System GoodStat jest całkowicie darmowy, lecz dopuszcza się korzystanie z niego wszelkim instytucjom i podmiotom prowadzących działalność gospodarczą, jak i osobom prywatntym które takiej działalności nie prowadzą.</li>
 						<li>System GoodStat obejmuje dowolną liczbę domen/instalacji.</li>
-						<li>Korzystając z Systemu GoodStat zobowiązujesz się do nie narażania serwisu http://goodstat.com.pl/ na straty, mowa tutaj o wszystkich aspektach związanych z funkcjonalnością serwisu.</li>
+						<li>Korzystając z Systemu GoodStat zobowiązujesz się do nie narażania serwisu http://goodstat.pl/ na straty, mowa tutaj o wszystkich aspektach związanych z funkcjonalnością serwisu.</li>
 						<li>Poniższe typy stron nie są wspierane i nie będą tolerowane przez System GoodStat:
 							<ol type='a'>
 								<li>strony promujące rasizm i przemoc, lub jakąkolwiek inną nielegalną działalność, w jakiejkolwiek formie</li>
@@ -35,14 +35,14 @@
 						</div>
 
 						<li>Dostawa Systemu GoodStat następuje drogą elektroniczną  poprzez udostępnienie Użytkownikowi linku do ściągnięcia kopii wersji Systemu GoodStat.</li>
-						<li>Serwis http://goodstat.com.pl/ nie oferuje programów zapisanych na nośnikach materialnych.</li>
+						<li>Serwis http://goodstat.pl/ nie oferuje programów zapisanych na nośnikach materialnych.</li>
 					
 						<div class="page-header">
 							<h2>Postanowienia końcowe</h2>
 						</div>
 
 						<li>Nabywca System GoodStat powinien zapoznać się z treścią Regulaminu najpóźniej w chwili instalacji Systemu GoodStat.</li>
-						<li>Ewentualne zmiany Regulaminu będą dokonywane wyłącznie z ważnego powodu i zostaną opublikowane na stronie www.goodstat.com.pl w zakładce „Regulamin”.</li>
+						<li>Ewentualne zmiany Regulaminu będą dokonywane wyłącznie z ważnego powodu i zostaną opublikowane na stronie www.goodstat.pl w zakładce „Regulamin”.</li>
 						<li>Regulamin został sporządzony na podstawie obowiązujących przepisów prawa polskiego. W sprawach nieuregulowanych Regulaminem, a także w zakresie w jakim Regulamin okazałby się sprzeczny z bezwzględnie obowiązującymi przepisami prawa, stosuje się przepisy prawa bezwzględnie obowiązującego.</li>
-						<li>Regulamin dostępny jest dla wszystkich Klientów w wersji elektronicznej na stronie goodstat.com.pl.</li>
+						<li>Regulamin dostępny jest dla wszystkich Klientów w wersji elektronicznej na stronie goodstat.pl.</li>
 				</ol>
