@@ -1,148 +1,68 @@
-body {
-	background-color: #3bb6fd;
+.padding10 {
+	padding: 10px;
 }
 
-.padding10{padding: 10px;}
-
-.page-header {
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-	border-bottom: 1px solid #eee;
-	margin-bottom: 5px;
-}
-h1, h2, h3, h4, h5, h6 {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-}
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    margin-bottom: .5rem;
-    font-family: inherit;
-    font-weight: 300;
-    line-height: 1.2;
-    color: inherit;
-}
-h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
-    font-size: 70%;
-    font-weight: 0;
-    color: #3192ca;
-    text-transform: uppercase;
-}
-
-.tresc, .tresc_zalogowany_jako {
-	background-color: #fff;
-	border: 1px solid #3192ca;
-    margin: 0 auto 20px;
-    opacity: 1;
-    padding: 20px;
-    -webkit-transition: all 300ms ease-in-out;
-    -moz-transition: all 300ms ease-in-out;
-    -ms-transition: all 300ms ease-in-out;
-    -o-transition: all 300ms ease-in-out;
-    transition: all 300ms ease-in-out;
-	border-radius: 2px;
-	border-width: 1px 1px 1px 5px;
-	box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1), inset 0 -1px 0 rgba(0,0,0,0.07);
-	background-clip: padding-box;
+#tekst-stopka {
 	
-    text-shadow: 1px 1px 2px #fff inset;
-    -moz-box-shadow: 1px 1px 2px #fff inset;
-    -webkit-box-shadow: 1px 1px 2px #fff inset;
-    box-shadow: 1px 1px 2px #fff inset;
-}
-.tresc { min-height:	600px; }
-
-.baner, .baner_instal {
-	border: 1px solid #3192ca;
-	margin: 0 auto 20px;
-	margin-top: 62px;
-    opacity: 1;
-    padding: 20px;
-    -webkit-transition: all 300ms ease-in-out;
-    -moz-transition: all 300ms ease-in-out;
-    -ms-transition: all 300ms ease-in-out;
-    -o-transition: all 300ms ease-in-out;
-    transition: all 300ms ease-in-out;
-	border-radius: 2px;
-	border-width: 1px 1px 1px 5px;
-	box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1), inset 0 -1px 0 rgba(0,0,0,0.07);
-	background-clip: padding-box;
-	
-    text-shadow: 1px 1px 2px #fff inset;
-    -moz-box-shadow: 1px 1px 2px #fff inset;
-    -webkit-box-shadow: 1px 1px 2px #fff inset;
-    box-shadow: 1px 1px 2px #fff inset;
-
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+50,a3e2fc+100 */
-background: rgb(255,255,255); /* Old browsers */
-background: -moz-linear-gradient(left, rgba(255,255,255,1) 50%, rgba(163,226,252,1) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(left, rgba(255,255,255,1) 50%,rgba(163,226,252,1) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to right, rgba(255,255,255,1) 50%,rgba(163,226,252,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#a3e2fc',GradientType=1 ); /* IE6-9 */
-}
-#tekst-baner{
-
-}
-#tekst-baner .blockquote {
-    margin-bottom: 0rem;
-    font-size: 1.rem;
-	color: #0569a0;
-}
-.baner { margin-top: 0px; }
-.baner_instal { margin-top: 10px; }
-.wersja { 
-	margin-top: 56px; 
-	
-	border: 0px solid #ddd;
-    opacity: 1;
-    padding: 5px 1px 0px 1px;
-    -webkit-transition: all 300ms ease-in-out;
-    -moz-transition: all 300ms ease-in-out;
-    -ms-transition: all 300ms ease-in-out;
-    -o-transition: all 300ms ease-in-out;
-    transition: all 300ms ease-in-out;
-	border-radius: 0px;
-	color: #256f9a;
 }
 
-.stopka {
-	color: #e9ecef;
-    margin: 0 auto 20px;
-    opacity: 1;
-    padding: 20px;
-     -webkit-transition: all 300ms ease-in-out;
-    -moz-transition: all 300ms ease-in-out;
-    -ms-transition: all 300ms ease-in-out;
-    -o-transition: all 300ms ease-in-out;
-    transition: all 300ms ease-in-out;
-	border-radius: 2px;
-	border-width: 1px 1px 1px 5px;
-	box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1), inset 0 -1px 0 rgba(0,0,0,0.07);
-	background-clip: padding-box;
-
-	background-color: #343a40;
-}
-.stopka a{
-	color: #fcb519;
-}
-.logo-baner{
-	text-align:	right;
-}
-
-/*----- clockbox ------*/
-.clockbox{
-    font-size: 14px;
-}
-#clockbox i {
-	font-size: 12px;
-}
-
-.jumbotron {
-    padding: 3rem 2rem;
-	
+fieldset {
+    margin-top: 1em;
+    border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border: #aaa solid 1px;
+    padding: 0.5em;
+    background: rgb(234, 236, 244);
     text-shadow: 1px 1px 2px #fff inset;
     -moz-box-shadow: 1px 1px 2px #fff inset;
     -webkit-box-shadow: 1px 1px 2px #fff inset;
     box-shadow: 1px 1px 2px #fff inset;
 }
 
+#pion_hr_wer {
+    width: 410px;
+	border-left: .25rem solid #fff!important;
+    height: calc(5.375rem - 4rem);
+    margin: auto 0rem;
+    color: #fff;
+    padding: 0 0 0 10px;
+    background-color: rgb(78, 115, 223);
+}
+
+.topbar .dropdown-list .dropdown-item:hover{
+	color: #4E73DF;
+	background: #E6E8F0;
+}
+
+.topbar.navbar-light .navbar-nav .nav-item .nav-link:hover{
+	color: #4E73DF;
+}
+/* tlo */
+.modal-backdrop {
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#45484d+0,000000+100;Black+3D+%231 */
+background: #45484d; /* Old browsers */
+background: -moz-linear-gradient(top,  #45484d 0%, #000000 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #45484d 0%,#000000 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #45484d 0%,#000000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+
+
+}
+
+.card_str_gl:hover {
+	background-color: rgba(221, 223, 235, 0.3);
+}
+
+#wersja {
+	background-color: rgb(252, 181, 25);
+}
+
+#stopka{
+	border-top: .25rem solid #fcb519!important;
+}
+
+/* wykresy */
 .wykres {
 	display: block;
 	position: relative;
@@ -207,71 +127,31 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007bff', end
 	color: #959594;
 }
 
-.page-item.disabled .page-link {
-    color: #dee2e6;
-}
 .pagination {
-	border-radius: .25rem;
+    border-radius: .25rem;
     border: 1px solid #dee2e6;
-	padding: 5px;
+    padding: 5px;
 }
 
-fieldset {
-	margin-top: 1em;
-    border-radius: 4px 4px 0 0;
-    -moz-border-radius: 4px 4px 0 0;
-    -webkit-border-radius: 4px 4px 0 0;
-    border: #aaa solid 1px;
-    padding: 0.5em;
-    background: #eee;
-    text-shadow: 1px 1px 2px #fff inset;
-    -moz-box-shadow: 1px 1px 2px #fff inset;
-    -webkit-box-shadow: 1px 1px 2px #fff inset;
-    box-shadow: 1px 1px 2px #fff inset;
+/* tabele */
+.table-hover tbody tr:hover {
+    color: #000000;
+    background-color: rgba(246, 194, 62, 0.25);
 }
-fieldset.tblFooters {
-    margin-top: 0;
-    margin-bottom: .5em;
-    border-top: 0;
-    text-align: right;
-    float: none;
-    clear: both;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
-    border-radius: 0 0 4px 5px;
-}
-.btn{
-	-webkit-border-radius: 25px;
-	border-radius: 25px;
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(230, 232, 240, 0.42);
 }
 
-#top-link-block.affix {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: rgba(8, 8, 8, 0.5);
-    border-radius: 3px;
-    color: #fff;
+.blockquote {
+    margin-bottom: 1rem;
+    padding-right: 10px;
+    font-size: 17px;
+    border-right: .25rem solid #e7e9f2!important;
+	font-family: 'Open Sans Condensed', sans-serif;
+	color: rgb(78, 115, 223);
 }
-#top-link-block a { color: #fff; }
-
-.card-header:first-child {
-    font-weight: 500;
-}
-
-canvas {
-  border: 1px dotted #e4e4e4;
-}
-
-.chart-container {
-	display: block;
-    width: 100%;
-	height: 300px;
-    overflow-x: auto;
-	overflow-y: auto;
-	margin-lefy: auto;
-	margin-right: auto;
-	padding: 50px;
+.blockquote-footer {
+    color: rgb(78, 115, 223);
 }
 
 
@@ -279,44 +159,12 @@ canvas {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*-- ukrycia --*/
-@media (max-width: 768px) {
-	
-	.page-header h1 {
-		font-size:	25px;
+@media (max-width: 576px) {
+	.container, .container-fluid {
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
 	}
-	.display-4 {
-		font-size: 2.0rem;
-		font-weight: 300;
-		line-height: 1.2;
+	.mt-5, .my-5 {
+		margin-top: 1rem!important;
 	}
-    .tooltip {
-        display: none !important;
-    }
-	.clockbox {
-		display: none !important;
-	}
-	.chart-container {
-		padding: 0px;
-	}
-	
-}
-
-
-@media (min-width: 1500px){
-	.container {
-		max-width: 1490px;
-	}    
 }
